@@ -4,33 +4,85 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Motion Ime Fest Live Ranking</title>
-<script>
-document.write(`
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body{font-family:'Inter',sans-serif;background:radial-gradient(circle at top left,#0a0f1c,#000);color:#f0f4fa;margin:0;padding:20px;overflow-x:hidden}
-h1{text-align:center;font-size:1.8em;margin-bottom:5px}
-h2{text-align:center;font-size:1em;color:#8da5c9;margin-top:0;margin-bottom:25px}
-table{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;font-size:15px}
-thead{background:#0f1b33}
-th,td{padding:10px 12px;text-align:left}
-tbody tr{transition:all 0.4s ease}
-tbody tr:hover{background:rgba(255,255,255,0.05)}
-.rank-1{background:linear-gradient(90deg,#ffe74c33,transparent)}
-.rank-2{background:linear-gradient(90deg,#c0c0c033,transparent)}
-.rank-3{background:linear-gradient(90deg,#cd7f3233,transparent)}
-.up{color:#00e47a;font-weight:600}
-.down{color:#ff5c5c;font-weight:600}
-footer{text-align:center;margin-top:20px;font-size:13px;color:#8da5c9}
-#status{text-align:center;font-size:14px;color:#8da5c9;margin-top:10px}
-.loading{text-align:center;color:#6fa3ff;font-size:14px}
-.error{color:#ff6b6b;text-align:center}
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top left, #0a0f1c, #000);
+  color: #f0f4fa;
+  margin: 0;
+  padding: 20px;
+  overflow-x: hidden;
+}
+h1 {
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 5px;
+}
+h2 {
+  text-align: center;
+  font-size: 1em;
+  color: #8da5c9;
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 15px;
+}
+thead {
+  background: #0f1b33;
+}
+th, td {
+  padding: 10px 12px;
+  text-align: left;
+}
+tbody tr {
+  transition: all 0.4s ease;
+}
+tbody tr:hover {
+  background: rgba(255,255,255,0.05);
+}
+.rank-1 {
+  background: linear-gradient(90deg, #ffe74c33, transparent);
+}
+.rank-2 {
+  background: linear-gradient(90deg, #c0c0c033, transparent);
+}
+.rank-3 {
+  background: linear-gradient(90deg, #cd7f3233, transparent);
+}
+.up {
+  color: #00e47a;
+  font-weight: 600;
+}
+.down {
+  color: #ff5c5c;
+  font-weight: 600;
+}
+footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #8da5c9;
+}
+#status {
+  text-align: center;
+  font-size: 14px;
+  color: #8da5c9;
+  margin-top: 10px;
+}
+.loading {
+  text-align: center;
+  color: #6fa3ff;
+  font-size: 14px;
+}
 </style>
-`);
-</script>
 </head>
 <body>
-<script>
-document.write(`
 <h1>📊 Motion Ime Fest — Live Vote Rankings</h1>
 <h2>Newcomer Streamer of the Year</h2>
 
@@ -47,176 +99,73 @@ document.write(`
       <th>Last Updated</th>
     </tr>
   </thead>
-  <tbody>
-    <tr><td colspan="6" style="text-align:center;color:#8da5c9;">Memuat data...</td></tr>
-  </tbody>
+  <tbody></tbody>
 </table>
 
-<footer>⚡ Data auto-refresh setiap 5 detik — Motion Ime Fest System</footer>
-`);
-</script>
+<footer>⚡ Data auto-refresh setiap 5 detik — sumber: generich.my.id/apivote</footer>
 
 <script>
-(function() {
-    const _0x4d7b = 5000;
-    let _0x29c3 = {};
-    let _0x5e82 = true;
-    let _0xretryCount = 0;
-    const _0xmaxRetries = 3;
+const API_URL = "https://generich.my.id/apivote";
+const REFRESH_MS = 5000;
 
-    // Multiple proxy options untuk fallback
-    const _0xproxyList = [
-        'https://api.allorigins.win/raw?url=',
-        'https://corsproxy.io/?',
-        'https://cors-anywhere.herokuapp.com/',
-        '' // Direct attempt
-    ];
+let lastData = {};
+let firstLoad = true;
 
-    // Encoded target URL
-    const _0xtargetUrl = 'https' + '://' + 'gener' + 'ich' + '.' + 'my' + '.' + 'id' + '/' + 'apivote';
+function fmt(num) {
+  return num.toLocaleString("en-US");
+}
 
-    async function _0x4e6d() {
-        const _0xproxyIndex = _0xretryCount % _0xproxyList.length;
-        const _0xproxy = _0xproxyList[_0xproxyIndex];
-        
-        try {
-            let _0xfetchUrl;
-            if (_0xproxy) {
-                _0xfetchUrl = _0xproxy + encodeURIComponent(_0xtargetUrl + '?_=' + Date.now());
-            } else {
-                _0xfetchUrl = _0xtargetUrl + '?_=' + Date.now();
-            }
+function diffSymbol(n) {
+  return n > 0 ? `<span class="up">+${n}</span>` :
+         n < 0 ? `<span class="down">${n}</span>` :
+         `<span style="color:#8da5c9;">0</span>`;
+}
 
-            console.log('Attempting fetch with proxy', _0xproxyIndex, ':', _0xfetchUrl);
+async function fetchData() {
+  const status = document.getElementById("status");
+  try {
+    const res = await fetch(API_URL + "?_=" + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const json = await res.json();
+    if (!json.success || !json.data) throw new Error("Invalid response");
 
-            const _0x3e94 = await fetch(_0xfetchUrl, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                mode: 'cors',
-                cache: 'no-cache'
-            });
+    const data = json.data.sort((a,b) => b.votes - a.votes);
+    const tbody = document.querySelector("#rankingTable tbody");
+    tbody.innerHTML = "";
 
-            if (!_0x3e94.ok) {
-                throw new Error(`HTTP ${_0x3e94.status}`);
-            }
+    data.forEach((d, i) => {
+      const prev = lastData[d.id]?.votes ?? d.votes;
+      const delta = d.votes - prev;
 
-            const _0x4a2b = await _0x3e94.json();
-            _0xretryCount = 0; // Reset retry count on success
-            return _0x4a2b;
+      const tr = document.createElement("tr");
+      tr.className = i === 0 ? "rank-1" : i === 1 ? "rank-2" : i === 2 ? "rank-3" : "";
 
-        } catch (_0x3f9d) {
-            _0xretryCount++;
-            console.error(`Proxy attempt ${_0xproxyIndex} failed:`, _0x3f9d);
-            
-            if (_0xretryCount < _0xmaxRetries * _0xproxyList.length) {
-                console.log(`Retrying with next proxy... (attempt ${_0xretryCount})`);
-                // Will automatically try next proxy on next call
-            } else {
-                throw new Error('All proxy attempts failed: ' + _0x3f9d.message);
-            }
-            throw _0x3f9d;
-        }
-    }
+      tr.innerHTML = `
+        <td>#${i + 1}</td>
+        <td>${d.name}</td>
+        <td>${fmt(d.votes)}</td>
+        <td>${diffSymbol(delta)}</td>
+        <td>${fmt(d.views)}</td>
+        <td>${new Date(d.lastUpdated).toLocaleTimeString()}</td>
+      `;
+      tbody.appendChild(tr);
 
-    function _0x1c6e(_0x2d4f) {
-        return _0x2d4f ? _0x2d4f.toLocaleString("en-US") : "0";
-    }
+      lastData[d.id] = { votes: d.votes, views: d.views };
+    });
 
-    function _0x3b2a(_0x4e1c) {
-        return _0x4e1c > 0 ? `<span class="up">+${_0x4e1c}</span>` :
-               _0x4e1c < 0 ? `<span class="down">${_0x4e1c}</span>` :
-               `<span style="color:#8da5c9;">0</span>`;
-    }
+    const totalVotes = json.totals?.votes?.toLocaleString() || "-";
+    const totalViews = json.totals?.views?.toLocaleString() || "-";
+    status.innerHTML = `✅ Updated ${new Date(json.timestamp).toLocaleTimeString()} — Total Votes: ${totalVotes}, Views: ${totalViews}`;
+    firstLoad = false;
 
-    function _0xshowError(_0xmessage) {
-        const _0x4c77 = document.getElementById("status");
-        const _0x3d4a = document.querySelector("#rankingTable tbody");
-        
-        _0x4c77.innerHTML = `<span class="error">❌ ${_0xmessage}</span>`;
-        _0x3d4a.innerHTML = `
-            <tr>
-                <td colspan="6" style="text-align:center;color:#8da5c9;">
-                    <div style="margin:10px 0;">Tidak dapat terhubung ke server</div>
-                    <button onclick="location.reload()" style="background:#00e47a;color:#000;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;font-weight:600;">
-                        🔄 Coba Lagi
-                    </button>
-                </td>
-            </tr>
-        `;
-    }
+  } catch (err) {
+    console.error(err);
+    document.getElementById("status").innerHTML = "❌ Gagal memuat data: " + err.message;
+  }
+}
 
-    function _0xshowLoading() {
-        const _0x4c77 = document.getElementById("status");
-        const _0x3d4a = document.querySelector("#rankingTable tbody");
-        
-        _0x4c77.innerHTML = `<span class="loading">🔄 Memuat data... (Attempt ${_0xretryCount + 1})</span>`;
-        _0x3d4a.innerHTML = `
-            <tr><td colspan="6" style="text-align:center;color:#8da5c9;">Menghubungkan ke server...</td></tr>
-        `;
-    }
-
-    async function _0x5d9f() {
-        _0xshowLoading();
-        
-        try {
-            const _0x2b8a = await _0x4e6d();
-            
-            if (!_0x2b8a || !_0x2b8a.success || !_0x2b8a.data) {
-                throw new Error("Format data tidak valid dari server");
-            }
-
-            const _0x1e5d = _0x2b8a.data.sort((_0x3a7b, _0x2f1d) => _0x2f1d.votes - _0x3a7b.votes);
-            const _0x3d4a = document.querySelector("#rankingTable tbody");
-            const _0x4c77 = document.getElementById("status");
-            
-            _0x3d4a.innerHTML = "";
-
-            _0x1e5d.forEach((_0x2e9c, _0x1f6a) => {
-                const _0x3b9d = _0x29c3[_0x2e9c.id]?.votes ?? _0x2e9c.votes;
-                const _0x4c2e = _0x2e9c.votes - _0x3b9d;
-
-                const _0x5a3b = document.createElement("tr");
-                _0x5a3b.className = _0x1f6a === 0 ? "rank-1" : _0x1f6a === 1 ? "rank-2" : _0x1f6a === 2 ? "rank-3" : "";
-
-                _0x5a3b.innerHTML = `
-                    <td>#${_0x1f6a + 1}</td>
-                    <td>${_0x2e9c.name || 'Unknown'}</td>
-                    <td>${_0x1c6e(_0x2e9c.votes)}</td>
-                    <td>${_0x3b2a(_0x4c2e)}</td>
-                    <td>${_0x1c6e(_0x2e9c.views)}</td>
-                    <td>${_0x2e9c.lastUpdated ? new Date(_0x2e9c.lastUpdated).toLocaleTimeString() : 'N/A'}</td>
-                `;
-                _0x3d4a.appendChild(_0x5a3b);
-
-                _0x29c3[_0x2e9c.id] = { votes: _0x2e9c.votes, views: _0x2e9c.views };
-            });
-
-            const _0x2d6f = _0x1c6e(_0x2b8a.totals?.votes);
-            const _0x1e9a = _0x1c6e(_0x2b8a.totals?.views);
-            _0x4c77.innerHTML = `✅ Updated ${new Date().toLocaleTimeString()} — Total Votes: ${_0x2d6f}, Views: ${_0x1e9a}`;
-            _0x5e82 = false;
-
-        } catch (_0x3a7f) {
-            console.error('Data processing error:', _0x3a7f);
-            
-            if (_0xretryCount >= _0xmaxRetries * _0xproxyList.length) {
-                _0xshowError("Tidak dapat terhubung ke server. Cek koneksi internet Anda.");
-            } else {
-                // Auto-retry akan terjadi pada interval berikutnya
-                _0xshowError(`Mencoba koneksi... (${_0xretryCount + 1}/${_0xmaxRetries * _0xproxyList.length})`);
-            }
-        }
-    }
-
-    // Initial load
-    setTimeout(_0x5d9f, 100);
-    
-    // Auto-refresh
-    setInterval(_0x5d9f, _0x4d7b);
-})();
+fetchData();
+setInterval(fetchData, REFRESH_MS);
 </script>
 </body>
 </html>
