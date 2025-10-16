@@ -6,43 +6,62 @@
 <title>Motion Ime Fest Live Ranking</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+:root {
+  --primary-blue: #1e88e5;
+  --dark-blue: #0d47a1;
+  --light-blue: #64b5f6;
+  --dark-bg: #0a0f1c;
+  --card-bg: rgba(13, 71, 161, 0.1);
+  --text-light: #e3f2fd;
+  --text-muted: #90caf9;
+  --success: #4caf50;
+  --danger: #f44336;
+  --warning: #ff9800;
+}
+
 body {
   font-family: 'Inter', sans-serif;
-  background: radial-gradient(circle at top left, #0a0f1c, #000);
-  color: #f0f4fa;
+  background: radial-gradient(circle at top left, var(--dark-bg), #000);
+  color: var(--text-light);
   margin: 0;
   padding: 20px;
   overflow-x: hidden;
   min-height: 100vh;
 }
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 .header {
   text-align: center;
   margin-bottom: 30px;
 }
+
 h1 {
   font-size: 2.2em;
   margin-bottom: 5px;
-  color: #1e88e5;
+  color: var(--primary-blue);
 }
+
 .subtitle {
   text-align: center;
   font-size: 1.1em;
-  color: #64b5f6;
+  color: var(--text-muted);
   margin-top: 0;
   margin-bottom: 25px;
 }
+
 .card {
-  background: rgba(13, 71, 161, 0.1);
+  background: var(--card-bg);
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(30, 136, 229, 0.2);
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -50,95 +69,118 @@ table {
   overflow: hidden;
   font-size: 15px;
 }
+
 thead {
   background: rgba(13, 71, 161, 0.3);
 }
+
 th, td {
   padding: 14px 16px;
   text-align: left;
 }
+
 th {
   font-weight: 600;
-  color: #64b5f6;
+  color: var(--light-blue);
 }
+
 tbody tr {
   transition: all 0.3s ease;
   border-bottom: 1px solid rgba(30, 136, 229, 0.1);
 }
+
 tbody tr:last-child {
   border-bottom: none;
 }
+
 tbody tr:hover {
   background: rgba(30, 136, 229, 0.1);
   transform: translateY(-2px);
 }
+
 .rank-1 {
   background: linear-gradient(90deg, rgba(255, 152, 0, 0.2), transparent);
-  border-left: 4px solid #ff9800;
+  border-left: 4px solid var(--warning);
 }
+
 .rank-2 {
   background: linear-gradient(90deg, rgba(189, 189, 189, 0.2), transparent);
   border-left: 4px solid #bdbdbd;
 }
+
 .rank-3 {
   background: linear-gradient(90deg, rgba(141, 110, 99, 0.2), transparent);
   border-left: 4px solid #8d6e63;
 }
+
 .up {
-  color: #4caf50;
+  color: var(--success);
   font-weight: 600;
 }
+
 .down {
-  color: #f44336;
+  color: var(--danger);
   font-weight: 600;
 }
+
 footer {
   text-align: center;
   margin-top: 30px;
   font-size: 13px;
-  color: #64b5f6;
+  color: var(--text-muted);
 }
+
 #status {
   text-align: center;
   font-size: 14px;
-  color: #64b5f6;
+  color: var(--text-muted);
   margin-top: 10px;
   margin-bottom: 20px;
   padding: 10px;
   border-radius: 8px;
   background: rgba(30, 136, 229, 0.1);
 }
+
 .loading {
   text-align: center;
-  color: #64b5f6;
+  color: var(--light-blue);
   font-size: 14px;
 }
+
 .status-update {
-  color: #4caf50;
+  color: var(--success);
 }
+
 .status-error {
-  color: #f44336;
+  color: var(--danger);
 }
+
 @media (max-width: 768px) {
   body {
     padding: 10px;
   }
+  
   h1 {
     font-size: 1.8em;
   }
+  
   .card {
     padding: 15px;
   }
+  
   table {
     font-size: 14px;
   }
+  
   th, td {
     padding: 10px 8px;
   }
 }
+
 .pulse {
   animation: pulse 2s infinite;
 }
+
 @keyframes pulse {
   0% {
     opacity: 1;
@@ -150,9 +192,34 @@ footer {
     opacity: 1;
   }
 }
+
+/* Sembunyikan elemen dari developer tools */
+.no-inspect {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Sembunyikan konten saat inspect */
+body {
+  position: relative;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  z-index: 9999;
+}
 </style>
 </head>
-<body>
+<body class="no-inspect">
 <div class="container">
   <div class="header">
     <h1>📊 Motion Ime Fest — Live Vote Rankings</h1>
@@ -181,16 +248,25 @@ footer {
 </div>
 
 <script>
-// Fixed API obfuscation - working version
+// Deteksi developer tools
+function detectDevTools() {
+  const threshold = 160;
+  const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+  const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+  
+  if (widthThreshold || heightThreshold) {
+    document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;color:white;font-size:24px;">Access Restricted</div>';
+    throw new Error("Developer Tools Detected");
+  }
+}
+
+// Cek secara berkala
+setInterval(detectDevTools, 1000);
+
+// Fungsi untuk mendapatkan URL API yang disamarkan
 function getApiUrl() {
-  // Simple and working obfuscation
-  const parts = [
-    'aHR0cHM6Ly',
-    '9nZW5lcmlj',
-    'aC5teS5pZC',
-    '9hcGl2b3Rl'
-  ];
-  const encoded = parts.join('');
+  // Encode base64 sederhana untuk menyamarkan URL
+  const encoded = btoa("aHR0cHM6Ly9nZW5lcmljaC5teS5pZC9hcGl2b3Rl");
   return atob(encoded);
 }
 
@@ -205,31 +281,30 @@ function fmt(num) {
 function diffSymbol(n) {
   return n > 0 ? `<span class="up">+${n}</span>` :
          n < 0 ? `<span class="down">${n}</span>` :
-         `<span style="color:#64b5f6;">0</span>`;
+         `<span style="color:var(--text-muted);">0</span>`;
 }
 
 async function fetchData() {
   const status = document.getElementById("status");
   try {
     const apiUrl = getApiUrl();
-    console.log('Fetching from:', apiUrl); // Debug line
+    const timestamp = new Date().getTime();
     
-    const res = await fetch(apiUrl + "?_=" + Date.now(), { 
+    // Buat request dengan header khusus
+    const res = await fetch(`${apiUrl}?_=${timestamp}`, { 
       method: 'GET',
-      mode: 'cors',
-      cache: "no-store",
+      cache: 'no-cache',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      referrerPolicy: 'no-referrer'
     });
     
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     
     const json = await res.json();
-    console.log('API Response:', json); // Debug line
-    
-    if (!json.success || !json.data) throw new Error("Invalid response format");
+    if (!json.success || !json.data) throw new Error("Invalid response");
 
     const data = json.data.sort((a,b) => b.votes - a.votes);
     const tbody = document.querySelector("#rankingTable tbody");
@@ -255,45 +330,28 @@ async function fetchData() {
       lastData[d.id] = { votes: d.votes, views: d.views };
     });
 
-    const totalVotes = json.totals?.votes ? fmt(json.totals.votes) : "-";
-    const totalViews = json.totals?.views ? fmt(json.totals.views) : "-";
+    const totalVotes = json.totals?.votes?.toLocaleString() || "-";
+    const totalViews = json.totals?.views?.toLocaleString() || "-";
     
-    status.innerHTML = `<span class="status-update">✅ Updated ${new Date().toLocaleTimeString()} — Total Votes: ${totalVotes}, Views: ${totalViews}</span>`;
+    status.innerHTML = `<span class="status-update">✅ Updated ${new Date(json.timestamp).toLocaleTimeString()} — Total Votes: ${totalVotes}, Views: ${totalViews}</span>`;
     status.classList.remove("loading", "pulse");
     
     firstLoad = false;
 
   } catch (err) {
-    console.error("Error fetching data:", err.message);
-    status.innerHTML = `<span class="status-error">❌ Gagal memuat data: ${err.message}</span>`;
+    console.error("Error fetching data");
+    status.innerHTML = `<span class="status-error">❌ Gagal memuat data. Silakan refresh halaman.</span>`;
     status.classList.remove("loading", "pulse");
   }
 }
 
-// Simple protection - just prevent common dev tools shortcuts
-document.addEventListener('keydown', function(e) {
-  // Block F12
-  if (e.key === 'F12') {
-    e.preventDefault();
-    return false;
-  }
-  
-  // Block Ctrl+Shift+I
-  if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-    e.preventDefault();
-    return false;
-  }
-  
-  // Block Ctrl+U
-  if (e.ctrlKey && e.key === 'u') {
-    e.preventDefault();
-    return false;
-  }
-});
-
-// Start the application
-fetchData();
-setInterval(fetchData, REFRESH_MS);
+// Coba fetch data
+try {
+  fetchData();
+  setInterval(fetchData, REFRESH_MS);
+} catch (e) {
+  console.error("Initialization error");
+}
 </script>
 </body>
 </html>
