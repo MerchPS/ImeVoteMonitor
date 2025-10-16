@@ -24,7 +24,7 @@ body {
   background: radial-gradient(circle at top left, var(--dark-bg), #000);
   color: var(--text-light);
   margin: 0;
-  padding: 20px;
+  padding: 15px;
   overflow-x: hidden;
   min-height: 100vh;
 }
@@ -36,31 +36,37 @@ body {
 
 .header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 h1 {
-  font-size: 2.2em;
+  font-size: 1.8em;
   margin-bottom: 5px;
-  color: #6c5ce7; /* Biru solid saja */
+  color: #6c5ce7;
   display: inline-block;
 }
 
 .subtitle {
   text-align: center;
-  font-size: 1.1em;
+  font-size: 1em;
   color: var(--text-muted);
   margin-top: 0;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .card {
   background: var(--card-bg);
-  border-radius: 15px;
-  padding: 20px;
+  border-radius: 12px;
+  padding: 15px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-x: auto;
+}
+
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
@@ -68,7 +74,8 @@ table {
   border-collapse: collapse;
   border-radius: 10px;
   overflow: hidden;
-  font-size: 15px;
+  font-size: 14px;
+  min-width: 600px;
 }
 
 thead {
@@ -76,13 +83,15 @@ thead {
 }
 
 th, td {
-  padding: 14px 16px;
+  padding: 12px 10px;
   text-align: left;
+  white-space: nowrap;
 }
 
 th {
   font-weight: 600;
   color: var(--secondary-color);
+  font-size: 0.9em;
 }
 
 tbody tr {
@@ -96,7 +105,6 @@ tbody tr:last-child {
 
 tbody tr:hover {
   background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-2px);
 }
 
 .rank-1 {
@@ -126,18 +134,19 @@ tbody tr:hover {
 
 footer {
   text-align: center;
-  margin-top: 30px;
-  font-size: 13px;
+  margin-top: 25px;
+  font-size: 12px;
   color: var(--text-muted);
+  padding: 0 10px;
 }
 
 #status {
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
   margin-top: 10px;
-  margin-bottom: 20px;
-  padding: 10px;
+  margin-bottom: 15px;
+  padding: 8px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.05);
 }
@@ -145,7 +154,7 @@ footer {
 .loading {
   text-align: center;
   color: var(--secondary-color);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .status-update {
@@ -156,25 +165,109 @@ footer {
   color: var(--danger);
 }
 
+/* Mobile Styles */
 @media (max-width: 768px) {
   body {
     padding: 10px;
   }
   
+  .container {
+    padding: 0 5px;
+  }
+  
   h1 {
-    font-size: 1.8em;
+    font-size: 1.5em;
+    margin-bottom: 8px;
+  }
+  
+  .subtitle {
+    font-size: 0.9em;
+    margin-bottom: 15px;
   }
   
   .card {
-    padding: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 0 -5px;
   }
   
   table {
-    font-size: 14px;
+    font-size: 13px;
+    min-width: 550px;
   }
   
   th, td {
     padding: 10px 8px;
+  }
+  
+  th {
+    font-size: 0.85em;
+  }
+  
+  /* Compact view untuk mobile */
+  .mobile-compact td:nth-child(1),
+  .mobile-compact td:nth-child(4),
+  .mobile-compact td:nth-child(5) {
+    font-size: 0.85em;
+  }
+  
+  footer {
+    font-size: 11px;
+    margin-top: 20px;
+  }
+  
+  #status {
+    font-size: 12px;
+    padding: 6px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 480px) {
+  body {
+    padding: 8px;
+  }
+  
+  h1 {
+    font-size: 1.3em;
+  }
+  
+  .subtitle {
+    font-size: 0.85em;
+  }
+  
+  .card {
+    padding: 10px;
+  }
+  
+  table {
+    font-size: 12px;
+    min-width: 500px;
+  }
+  
+  th, td {
+    padding: 8px 6px;
+  }
+  
+  th {
+    font-size: 0.8em;
+  }
+  
+  footer {
+    font-size: 10px;
+  }
+}
+
+/* Touch improvements */
+@media (hover: none) {
+  tbody tr:hover {
+    background: transparent;
+    transform: none;
+  }
+  
+  tbody tr:active {
+    background: rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -193,6 +286,25 @@ footer {
     opacity: 1;
   }
 }
+
+/* Scrollbar styling untuk mobile */
+.table-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 3px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
 </style>
 </head>
 <body>
@@ -205,19 +317,21 @@ footer {
   <div id="status" class="loading pulse">Loading data...</div>
 
   <div class="card">
-    <table id="rankingTable">
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Name</th>
-          <th>Votes</th>
-          <th>Δ Votes</th>
-          <th>Views</th>
-          <th>Last Updated</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-container">
+      <table id="rankingTable">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Votes</th>
+            <th>Δ Votes</th>
+            <th>Views</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
 
   <footer>⚡ Data auto-refresh setiap 5 detik</footer>
@@ -275,6 +389,10 @@ async function fetchData() {
       const delta = d.votes - prev;
 
       const tr = document.createElement("tr");
+      // Tambah class mobile-compact untuk styling khusus mobile
+      if (window.innerWidth <= 768) {
+        tr.classList.add('mobile-compact');
+      }
       tr.className = i === 0 ? "rank-1" : i === 1 ? "rank-2" : i === 2 ? "rank-3" : "";
 
       tr.innerHTML = `
@@ -327,6 +445,18 @@ document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'u') {
     e.preventDefault();
   }
+});
+
+// Handle resize untuk responsive design
+window.addEventListener('resize', function() {
+  const rows = document.querySelectorAll('#rankingTable tbody tr');
+  rows.forEach(row => {
+    if (window.innerWidth <= 768) {
+      row.classList.add('mobile-compact');
+    } else {
+      row.classList.remove('mobile-compact');
+    }
+  });
 });
 
 fetchData();
