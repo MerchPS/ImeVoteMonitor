@@ -1,171 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Motion Ime Fest Live Ranking</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-body {
-  font-family: 'Inter', sans-serif;
-  background: radial-gradient(circle at top left, #0a0f1c, #000);
-  color: #f0f4fa;
-  margin: 0;
-  padding: 20px;
-  overflow-x: hidden;
-}
-h1 {
-  text-align: center;
-  font-size: 1.8em;
-  margin-bottom: 5px;
-}
-h2 {
-  text-align: center;
-  font-size: 1em;
-  color: #8da5c9;
-  margin-top: 0;
-  margin-bottom: 25px;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  border-radius: 10px;
-  overflow: hidden;
-  font-size: 15px;
-}
-thead {
-  background: #0f1b33;
-}
-th, td {
-  padding: 10px 12px;
-  text-align: left;
-}
-tbody tr {
-  transition: all 0.4s ease;
-}
-tbody tr:hover {
-  background: rgba(255,255,255,0.05);
-}
-.rank-1 {
-  background: linear-gradient(90deg, #ffe74c33, transparent);
-}
-.rank-2 {
-  background: linear-gradient(90deg, #c0c0c033, transparent);
-}
-.rank-3 {
-  background: linear-gradient(90deg, #cd7f3233, transparent);
-}
-.up {
-  color: #00e47a;
-  font-weight: 600;
-}
-.down {
-  color: #ff5c5c;
-  font-weight: 600;
-}
-footer {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 13px;
-  color: #8da5c9;
-}
-#status {
-  text-align: center;
-  font-size: 14px;
-  color: #8da5c9;
-  margin-top: 10px;
-}
-.loading {
-  text-align: center;
-  color: #6fa3ff;
-  font-size: 14px;
-}
-</style>
-</head>
-<body>
-<h1>📊 Motion Ime Fest — Live Vote Rankings</h1>
-<h2>Newcomer Streamer of the Year</h2>
-
-<div id="status" class="loading">Loading data...</div>
-
-<table id="rankingTable">
-  <thead>
-    <tr>
-      <th>Rank</th>
-      <th>Name</th>
-      <th>Votes</th>
-      <th>Δ Votes</th>
-      <th>Views</th>
-      <th>Last Updated</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-
-<footer>⚡ Data auto-refresh setiap 5 detik — sumber: generich.my.id/apivote</footer>
-
+<meta charset="UTF-8">
+<title>Motion Ime Fest</title>
 <script>
-const API_URL = atob("aHR0cHM6Ly9nZW5lcmljaC5teS5pZC9hcGl2b3Rl");
-const REFRESH_MS = 5000;
+const _0x12cd=['body','font-family','Inter, sans-serif','background','radial-gradient(circle at top left, #0a0f1c, #000)','color','#f0f4fa','margin','0','padding','20px','overflow-x','hidden','h1','text-align','center','font-size','1.8em','margin-bottom','5px','h2','1em','#8da5c9','margin-top','margin-bottom','25px','table','width','100%','border-collapse','collapse','border-radius','10px','overflow','font-size','15px','thead','#0f1b33','th, td','10px 12px','tbody tr','transition','all 0.4s ease','tbody tr:hover','rgba(255,255,255,0.05)','.rank-1','linear-gradient(90deg, #ffe74c33, transparent)','.rank-2','#c0c0c033','.rank-3','#cd7f3233','.up','#00e47a','font-weight','600','.down','#ff5c5c','footer','13px','#status','14px','.loading','#6fa3ff','getElementById','📊 Motion Ime Fest — Live Vote Rankings','Newcomer Streamer of the Year','Loading data...','rankingTable','Rank','Name','Votes','Δ Votes','Views','Last Updated','⚡ Data auto-refresh setiap 5 detik — Motion Ime Fest System','style','createElement','textContent','head','appendChild','innerHTML','<h1>','</h1>','<h2>','</h2>','<div id=\"status\" class=\"loading\">','</div>','<table id=\"rankingTable\"><thead><tr>','<th>','</th>','</tr></thead><tbody></tbody></table>','<footer>','</footer>'];
+(function(_0x2c3e12,_0x12cdc2){const _0x2e3a8a=function(_0x4a7f2d){while(--_0x4a7f2d){_0x2c3e12['push'](_0x2c3e12['shift']());}};_0x2e3a8a(++_0x12cdc2);}(_0x12cd,0x1c3));const _0x2e3a=function(_0x2c3e12,_0x12cdc2){_0x2c3e12=_0x2c3e12-0x0;let _0x2e3a8a=_0x12cd[_0x2c3e12];return _0x2e3a8a;};
+document[_0x2e3a('0x3e')]=_0x2e3a('0x0')+_0x2e3a('0x1')+_0x2e3a('0x2')+_0x2e3a('0x3')+_0x2e3a('0x4')+_0x2e3a('0x5')+_0x2e3a('0x6')+_0x2e3a('0x7')+_0x2e3a('0x8')+_0x2e3a('0x9')+_0x2e3a('0xa')+_0x2e3a('0xb')+_0x2e3a('0xc')+_0x2e3a('0xd')+_0x2e3a('0xe')+_0x2e3a('0xf')+_0x2e3a('0x10')+_0x2e3a('0x11')+_0x2e3a('0x12')+_0x2e3a('0x13')+_0x2e3a('0x14')+_0x2e3a('0x15')+_0x2e3a('0x16')+_0x2e3a('0x17')+_0x2e3a('0x18')+_0x2e3a('0x19')+_0x2e3a('0x1a')+_0x2e3a('0x1b')+_0x2e3a('0x1c')+_0x2e3a('0x1d')+_0x2e3a('0x1e')+_0x2e3a('0x1f')+_0x2e3a('0x20')+_0x2e3a('0x21')+_0x2e3a('0x22')+_0x2e3a('0x23')+_0x2e3a('0x24')+_0x2e3a('0x25')+_0x2e3a('0x26')+_0x2e3a('0x27')+_0x2e3a('0x28')+_0x2e3a('0x29')+_0x2e3a('0x2a')+_0x2e3a('0x2b')+_0x2e3a('0x2c')+_0x2e3a('0x2d')+_0x2e3a('0x2e')+_0x2e3a('0x2f')+_0x2e3a('0x30')+_0x2e3a('0x31')+_0x2e3a('0x32')+_0x2e3a('0x33')+_0x2e3a('0x34')+_0x2e3a('0x35')+_0x2e3a('0x36')+_0x2e3a('0x37')+_0x2e3a('0x38')+_0x2e3a('0x39')+_0x2e3a('0x3a')+_0x2e3a('0x3b')+_0x2e3a('0x3c')+_0x2e3a('0x3d')+'</style>';
+const _0x4b2c=document['createElement']('div');_0x4b2c[_0x2e3a('0x3f')]=_0x2e3a('0x40')+_0x2e3a('0x41')+_0x2e3a('0x42')+_0x2e3a('0x43')+_0x2e3a('0x44')+_0x2e3a('0x45')+_0x2e3a('0x46')+_0x2e3a('0x47')+_0x2e3a('0x48')+_0x2e3a('0x49')+_0x2e3a('0x4a')+_0x2e3a('0x4b')+_0x2e3a('0x4c')+_0x2e3a('0x4d')+_0x2e3a('0x4e')+_0x2e3a('0x4f')+_0x2e3a('0x50')+_0x2e3a('0x51')+_0x2e3a('0x52')+_0x2e3a('0x53')+_0x2e3a('0x54')+_0x2e3a('0x55')+_0x2e3a('0x56')+_0x2e3a('0x57')+_0x2e3a('0x58')+_0x2e3a('0x59')+_0x2e3a('0x5a')+_0x2e3a('0x5b')+_0x2e3a('0x5c')+_0x2e3a('0x5d')+_0x2e3a('0x5e')+_0x2e3a('0x5f')+_0x2e3a('0x60')+_0x2e3a('0x61')+_0x2e3a('0x62')+_0x2e3a('0x63');document[_0x2e3a('0x64')][_0x2e3a('0x65')](_0x4b2c);
+</script>
+<script>
+(function() {
+    const _0x3c5a = ['gener', 'ich', '.my', '.id', '/ap', 'ivo', 'te'];
+    const _0x1a2f = [109, 111, 116, 105, 111, 110, 105, 109, 101];
+    const _0x4d7b = 5000;
+    
+    let _0x29c3 = {};
+    let _0x5e82 = true;
 
-let lastData = {};
-let firstLoad = true;
+    function _0x2a8d(_0x3f71) {
+        try {
+            let _0x1b4d = '';
+            for (let _0x2c9e = 0; _0x2c9e < _0x3f71.length; _0x2c9e++) {
+                _0x1b4d += String.fromCharCode(_0x3f71.charCodeAt(_0x2c9e) ^ _0x1a2f[_0x2c9e % _0x1a2f.length]);
+            }
+            return JSON.parse(_0x1b4d);
+        } catch (_0x3a9c) {
+            throw new Error('Data format error');
+        }
+    }
 
-function fmt(num) {
-  return num.toLocaleString("en-US");
-}
+    async function _0x4e6d() {
+        try {
+            const _0x3b81 = _0x3c5a[0] + _0x3c5a[1] + _0x3c5a[2] + _0x3c5a[3] + _0x3c5a[4] + _0x3c5a[5] + _0x3c5a[6];
+            const _0x2f47 = {
+                _t: Date.now(),
+                _r: Math.random().toString(36).substring(2, 9),
+                _v: '2.1',
+                cache: 'no-cache'
+            };
+            
+            const _0x5c12 = new URL(_0x3b81);
+            Object.keys(_0x2f47).forEach(_0x1d8a => {
+                _0x5c12.searchParams.set(_0x1d8a, _0x2f47[_0x1d8a]);
+            });
+            
+            const _0x3e94 = await fetch(_0x5c12.toString(), {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Referer': window.location.href
+                },
+                cache: 'no-store',
+                mode: 'cors',
+                credentials: 'omit'
+            });
+            
+            if (!_0x3e94.ok) throw new Error(`HTTP ${_0x3e94.status}`);
+            
+            const _0x4a2b = await _0x3e94.json();
+            return _0x4a2b;
+            
+        } catch (_0x3f9d) {
+            throw _0x3f9d;
+        }
+    }
 
-function diffSymbol(n) {
-  return n > 0 ? `<span class="up">+${n}</span>` :
-         n < 0 ? `<span class="down">${n}</span>` :
-         `<span style="color:#8da5c9;">0</span>`;
-}
+    function _0x1c6e(_0x2d4f) {
+        return _0x2d4f.toLocaleString("en-US");
+    }
 
-async function fetchData() {
-  const status = document.getElementById("status");
-  try {
-    const res = await fetch(API_URL + "?_=" + Date.now(), { cache: "no-store" });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const json = await res.json();
-    if (!json.success || !json.data) throw new Error("Invalid response");
+    function _0x3b2a(_0x4e1c) {
+        return _0x4e1c > 0 ? `<span class="up">+${_0x4e1c}</span>` :
+               _0x4e1c < 0 ? `<span class="down">${_0x4e1c}</span>` :
+               `<span style="color:#8da5c9;">0</span>`;
+    }
 
-    const data = json.data.sort((a,b) => b.votes - a.votes);
-    const tbody = document.querySelector("#rankingTable tbody");
-    tbody.innerHTML = "";
+    async function _0x5d9f() {
+        const _0x4c77 = document.getElementById("status");
+        try {
+            const _0x2b8a = await _0x4e6d();
+            
+            if (!_0x2b8a.success || !_0x2b8a.data) throw new Error("Invalid response");
 
-    data.forEach((d, i) => {
-      const prev = lastData[d.id]?.votes ?? d.votes;
-      const delta = d.votes - prev;
+            const _0x1e5d = _0x2b8a.data.sort((_0x3a7b,_0x2f1d) => _0x2f1d.votes - _0x3a7b.votes);
+            const _0x3d4a = document.querySelector("#rankingTable tbody");
+            _0x3d4a.innerHTML = "";
 
-      const tr = document.createElement("tr");
-      tr.className = i === 0 ? "rank-1" : i === 1 ? "rank-2" : i === 2 ? "rank-3" : "";
+            _0x1e5d.forEach((_0x2e9c, _0x1f6a) => {
+                const _0x3b9d = _0x29c3[_0x2e9c.id]?.votes ?? _0x2e9c.votes;
+                const _0x4c2e = _0x2e9c.votes - _0x3b9d;
 
-      tr.innerHTML = `
-        <td>#${i + 1}</td>
-        <td>${d.name}</td>
-        <td>${fmt(d.votes)}</td>
-        <td>${diffSymbol(delta)}</td>
-        <td>${fmt(d.views)}</td>
-        <td>${new Date(d.lastUpdated).toLocaleTimeString()}</td>
-      `;
-      tbody.appendChild(tr);
+                const _0x5a3b = document.createElement("tr");
+                _0x5a3b.className = _0x1f6a === 0 ? "rank-1" : _0x1f6a === 1 ? "rank-2" : _0x1f6a === 2 ? "rank-3" : "";
 
-      lastData[d.id] = { votes: d.votes, views: d.views };
-    });
+                _0x5a3b.innerHTML = `
+                    <td>#${_0x1f6a + 1}</td>
+                    <td>${_0x2e9c.name}</td>
+                    <td>${_0x1c6e(_0x2e9c.votes)}</td>
+                    <td>${_0x3b2a(_0x4c2e)}</td>
+                    <td>${_0x1c6e(_0x2e9c.views)}</td>
+                    <td>${new Date(_0x2e9c.lastUpdated).toLocaleTimeString()}</td>
+                `;
+                _0x3d4a.appendChild(_0x5a3b);
 
-    const totalVotes = json.totals?.votes?.toLocaleString() || "-";
-    const totalViews = json.totals?.views?.toLocaleString() || "-";
-    status.innerHTML = `✅ Updated ${new Date(json.timestamp).toLocaleTimeString()} — Total Votes: ${totalVotes}, Views: ${totalViews}`;
-    firstLoad = false;
+                _0x29c3[_0x2e9c.id] = { votes: _0x2e9c.votes, views: _0x2e9c.views };
+            });
 
-  } catch (err) {
-    console.error(err);
-    document.getElementById("status").innerHTML = "❌ Gagal memuat data: " + err.message;
-  }
-}
+            const _0x2d6f = _0x2b8a.totals?.votes?.toLocaleString() || "-";
+            const _0x1e9a = _0x2b8a.totals?.views?.toLocaleString() || "-";
+            _0x4c77.innerHTML = `✅ Updated ${new Date(_0x2b8a.timestamp).toLocaleTimeString()} — Total Votes: ${_0x2d6f}, Views: ${_0x1e9a}`;
+            _0x5e82 = false;
 
-fetchData();
-setInterval(fetchData, REFRESH_MS);
+        } catch (_0x3a7f) {
+            _0x4c77.innerHTML = "❌ Gagal memuat data: " + _0x3a7f.message;
+        }
+    }
+
+    _0x5d9f();
+    setInterval(_0x5d9f, _0x4d7b);
+})();
 </script>
 </body>
 </html>
