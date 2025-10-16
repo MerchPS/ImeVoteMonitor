@@ -181,16 +181,17 @@ footer {
 </div>
 
 <script>
-// Simple and safe API obfuscation
+// Fixed API obfuscation - working version
 function getApiUrl() {
-  // Split and encode the URL parts
+  // Simple and working obfuscation
   const parts = [
     'aHR0cHM6Ly',
     '9nZW5lcmlj',
     'aC5teS5pZC',
     '9hcGl2b3Rl'
   ];
-  return atob(parts.join(''));
+  const encoded = parts.join('');
+  return atob(encoded);
 }
 
 const REFRESH_MS = 5000;
@@ -211,17 +212,24 @@ async function fetchData() {
   const status = document.getElementById("status");
   try {
     const apiUrl = getApiUrl();
+    console.log('Fetching from:', apiUrl); // Debug line
+    
     const res = await fetch(apiUrl + "?_=" + Date.now(), { 
+      method: 'GET',
+      mode: 'cors',
       cache: "no-store",
       headers: {
         'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
+        'Content-Type': 'application/json'
       }
     });
     
-    if (!res.ok) throw new Error("HTTP " + res.status);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    
     const json = await res.json();
-    if (!json.success || !json.data) throw new Error("Invalid response");
+    console.log('API Response:', json); // Debug line
+    
+    if (!json.success || !json.data) throw new Error("Invalid response format");
 
     const data = json.data.sort((a,b) => b.votes - a.votes);
     const tbody = document.querySelector("#rankingTable tbody");
@@ -247,17 +255,17 @@ async function fetchData() {
       lastData[d.id] = { votes: d.votes, views: d.views };
     });
 
-    const totalVotes = json.totals?.votes?.toLocaleString() || "-";
-    const totalViews = json.totals?.views?.toLocaleString() || "-";
+    const totalVotes = json.totals?.votes ? fmt(json.totals.votes) : "-";
+    const totalViews = json.totals?.views ? fmt(json.totals.views) : "-";
     
-    status.innerHTML = `<span class="status-update">✅ Updated ${new Date(json.timestamp).toLocaleTimeString()} — Total Votes: ${totalVotes}, Views: ${totalViews}</span>`;
+    status.innerHTML = `<span class="status-update">✅ Updated ${new Date().toLocaleTimeString()} — Total Votes: ${totalVotes}, Views: ${totalViews}</span>`;
     status.classList.remove("loading", "pulse");
     
     firstLoad = false;
 
   } catch (err) {
-    console.error("Error fetching data");
-    status.innerHTML = `<span class="status-error">❌ Gagal memuat data. Silakan refresh halaman.</span>`;
+    console.error("Error fetching data:", err.message);
+    status.innerHTML = `<span class="status-error">❌ Gagal memuat data: ${err.message}</span>`;
     status.classList.remove("loading", "pulse");
   }
 }
