@@ -63,47 +63,41 @@ document.write(`
 
     async function _0x4e6d() {
         try {
+            // Build URL dari bagian-bagian yang terpisah
             const _0x3b81 = _0x3c5a[0] + _0x3c5a[1] + _0x3c5a[2] + _0x3c5a[3] + _0x3c5a[4] + _0x3c5a[5] + _0x3c5a[6] + _0x3c5a[7];
-            const _0x2f47 = {
-                _t: Date.now(),
-                _r: Math.random().toString(36).substring(2, 9),
-                _v: '2.1',
-                cache: 'no-cache'
-            };
             
-            const urlParams = new URLSearchParams();
-            Object.keys(_0x2f47).forEach(_0x1d8a => {
-                urlParams.set(_0x1d8a, _0x2f47[_0x1d8a]);
-            });
+            // Tambahkan timestamp untuk menghindari cache
+            const timestamp = Date.now();
+            const fullUrl = _0x3b81 + '?_=' + timestamp;
             
-            const fullUrl = _0x3b81 + '?' + urlParams.toString();
+            console.log('Fetching from:', fullUrl); // Debug line
             
             const _0x3e94 = await fetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
                     'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Referer': window.location.href
+                    'Pragma': 'no-cache'
                 },
-                cache: 'no-store',
                 mode: 'cors',
-                credentials: 'omit'
+                credentials: 'same-origin'
             });
             
-            if (!_0x3e94.ok) throw new Error(`HTTP ${_0x3e94.status}`);
+            if (!_0x3e94.ok) {
+                throw new Error(`HTTP ${_0x3e94.status} - ${_0x3e94.statusText}`);
+            }
             
             const _0x4a2b = await _0x3e94.json();
             return _0x4a2b;
             
         } catch (_0x3f9d) {
-            throw _0x3f9d;
+            console.error('Fetch error:', _0x3f9d);
+            throw new Error('Network error: ' + _0x3f9d.message);
         }
     }
 
     function _0x1c6e(_0x2d4f) {
-        return _0x2d4f.toLocaleString("en-US");
+        return _0x2d4f ? _0x2d4f.toLocaleString("en-US") : "0";
     }
 
     function _0x3b2a(_0x4e1c) {
@@ -117,9 +111,11 @@ document.write(`
         try {
             const _0x2b8a = await _0x4e6d();
             
-            if (!_0x2b8a.success || !_0x2b8a.data) throw new Error("Invalid response");
+            if (!_0x2b8a || !_0x2b8a.success || !_0x2b8a.data) {
+                throw new Error("Invalid response format");
+            }
 
-            const _0x1e5d = _0x2b8a.data.sort((_0x3a7b,_0x2f1d) => _0x2f1d.votes - _0x3a7b.votes);
+            const _0x1e5d = _0x2b8a.data.sort((_0x3a7b, _0x2f1d) => _0x2f1d.votes - _0x3a7b.votes);
             const _0x3d4a = document.querySelector("#rankingTable tbody");
             _0x3d4a.innerHTML = "";
 
@@ -132,28 +128,40 @@ document.write(`
 
                 _0x5a3b.innerHTML = `
                     <td>#${_0x1f6a + 1}</td>
-                    <td>${_0x2e9c.name}</td>
+                    <td>${_0x2e9c.name || 'Unknown'}</td>
                     <td>${_0x1c6e(_0x2e9c.votes)}</td>
                     <td>${_0x3b2a(_0x4c2e)}</td>
                     <td>${_0x1c6e(_0x2e9c.views)}</td>
-                    <td>${new Date(_0x2e9c.lastUpdated).toLocaleTimeString()}</td>
+                    <td>${_0x2e9c.lastUpdated ? new Date(_0x2e9c.lastUpdated).toLocaleTimeString() : 'N/A'}</td>
                 `;
                 _0x3d4a.appendChild(_0x5a3b);
 
                 _0x29c3[_0x2e9c.id] = { votes: _0x2e9c.votes, views: _0x2e9c.views };
             });
 
-            const _0x2d6f = _0x2b8a.totals?.votes?.toLocaleString() || "-";
-            const _0x1e9a = _0x2b8a.totals?.views?.toLocaleString() || "-";
-            _0x4c77.innerHTML = `✅ Updated ${new Date(_0x2b8a.timestamp).toLocaleTimeString()} — Total Votes: ${_0x2d6f}, Views: ${_0x1e9a}`;
+            const _0x2d6f = _0x1c6e(_0x2b8a.totals?.votes);
+            const _0x1e9a = _0x1c6e(_0x2b8a.totals?.views);
+            _0x4c77.innerHTML = `✅ Updated ${new Date().toLocaleTimeString()} — Total Votes: ${_0x2d6f}, Views: ${_0x1e9a}`;
             _0x5e82 = false;
 
         } catch (_0x3a7f) {
-            _0x4c77.innerHTML = "❌ Gagal memuat data: " + _0x3a7f.message;
+            console.error('Data processing error:', _0x3a7f);
+            _0x4c77.innerHTML = "❌ Gagal memuat data. Cek koneksi internet atau coba refresh halaman.";
+            
+            // Fallback: tampilkan data dummy untuk testing
+            if (_0x5e82) {
+                const _0x3d4a = document.querySelector("#rankingTable tbody");
+                _0x3d4a.innerHTML = `
+                    <tr><td colspan="6" style="text-align:center;color:#8da5c9;">Sedang memuat data...</td></tr>
+                `;
+            }
         }
     }
 
-    _0x5d9f();
+    // Coba fetch data saat halaman load
+    setTimeout(_0x5d9f, 100);
+    
+    // Setup auto-refresh
     setInterval(_0x5d9f, _0x4d7b);
 })();
 </script>
