@@ -5,7 +5,198 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Motion Ime Fest Live Ranking</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css" />
+<style>
+:root {
+  --primary-color: #6c5ce7;
+  --secondary-color: #a29bfe;
+  --accent-color: #fd79a8;
+  --dark-bg: #0a0f1c;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --text-light: #f0f4fa;
+  --text-muted: #8da5c9;
+  --success: #00e47a;
+  --danger: #ff5c5c;
+  --warning: #ffe74c;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top left, var(--dark-bg), #000);
+  color: var(--text-light);
+  margin: 0;
+  padding: 20px;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 2.2em;
+  margin-bottom: 5px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 1.1em;
+  color: var(--text-muted);
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 15px;
+}
+
+thead {
+  background: rgba(15, 27, 51, 0.8);
+}
+
+th, td {
+  padding: 14px 16px;
+  text-align: left;
+}
+
+th {
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.rank-1 {
+  background: linear-gradient(90deg, rgba(255, 231, 76, 0.2), transparent);
+  border-left: 4px solid var(--warning);
+}
+
+.rank-2 {
+  background: linear-gradient(90deg, rgba(192, 192, 192, 0.2), transparent);
+  border-left: 4px solid #c0c0c0;
+}
+
+.rank-3 {
+  background: linear-gradient(90deg, rgba(205, 127, 50, 0.2), transparent);
+  border-left: 4px solid #cd7f32;
+}
+
+.up {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.down {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+footer {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+#status {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.loading {
+  text-align: center;
+  color: var(--secondary-color);
+  font-size: 14px;
+}
+
+.status-update {
+  color: var(--success);
+}
+
+.status-error {
+  color: var(--danger);
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  
+  h1 {
+    font-size: 1.8em;
+  }
+  
+  .card {
+    padding: 15px;
+  }
+  
+  table {
+    font-size: 14px;
+  }
+  
+  th, td {
+    padding: 10px 8px;
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+</style>
 </head>
 <body>
 <div class="container">
@@ -35,6 +226,114 @@
   <footer>⚡ Data auto-refresh setiap 5 detik</footer>
 </div>
 
-<script src="/js/app.js"></script>
+<script>
+// File JavaScript terpisah (biasanya disimpan sebagai script.js)
+// Untuk keperluan contoh, tetap disimpan inline
+
+const REFRESH_MS = 5000;
+
+let lastData = {};
+let firstLoad = true;
+
+function fmt(num) {
+  return num.toLocaleString("en-US");
+}
+
+function diffSymbol(n) {
+  return n > 0 ? `<span class="up">+${n}</span>` :
+         n < 0 ? `<span class="down">${n}</span>` :
+         `<span style="color:var(--text-muted);">0</span>`;
+}
+
+// Fungsi untuk menyamarkan API endpoint - DIPERBAIKI
+function getApiUrl() {
+  // Tetap menggunakan endpoint asli yang berfungsi
+  const base = "generich";
+  const domain = "my.id";
+  const path = "apivote";
+  return `https://${base}.${domain}/${path}`;
+}
+
+async function fetchData() {
+  const status = document.getElementById("status");
+  try {
+    const apiUrl = getApiUrl();
+    const res = await fetch(apiUrl + "?_=" + Date.now(), { 
+      cache: "no-store",
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const json = await res.json();
+    if (!json.success || !json.data) throw new Error("Invalid response");
+
+    const data = json.data.sort((a,b) => b.votes - a.votes);
+    const tbody = document.querySelector("#rankingTable tbody");
+    tbody.innerHTML = "";
+
+    data.forEach((d, i) => {
+      const prev = lastData[d.id]?.votes ?? d.votes;
+      const delta = d.votes - prev;
+
+      const tr = document.createElement("tr");
+      tr.className = i === 0 ? "rank-1" : i === 1 ? "rank-2" : i === 2 ? "rank-3" : "";
+
+      tr.innerHTML = `
+        <td>#${i + 1}</td>
+        <td>${d.name}</td>
+        <td>${fmt(d.votes)}</td>
+        <td>${diffSymbol(delta)}</td>
+        <td>${fmt(d.views)}</td>
+        <td>${new Date(d.lastUpdated).toLocaleTimeString()}</td>
+      `;
+      tbody.appendChild(tr);
+
+      lastData[d.id] = { votes: d.votes, views: d.views };
+    });
+
+    const totalVotes = json.totals?.votes?.toLocaleString() || "-";
+    const totalViews = json.totals?.views?.toLocaleString() || "-";
+    
+    status.innerHTML = `<span class="status-update">✅ Updated ${new Date(json.timestamp).toLocaleTimeString()} — Total Votes: ${totalVotes}, Views: ${totalViews}</span>`;
+    status.classList.remove("loading", "pulse");
+    
+    firstLoad = false;
+
+  } catch (err) {
+    console.error(err);
+    status.innerHTML = `<span class="status-error">❌ Gagal memuat data: ${err.message}</span>`;
+    status.classList.remove("loading", "pulse");
+  }
+}
+
+// Tambahan untuk membuat sedikit lebih sulit di-inspect
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+
+document.addEventListener('keydown', function(e) {
+  // Block F12
+  if (e.key === 'F12') {
+    e.preventDefault();
+  }
+  // Block Ctrl+Shift+I
+  if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+    e.preventDefault();
+  }
+  // Block Ctrl+Shift+J
+  if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+    e.preventDefault();
+  }
+  // Block Ctrl+U
+  if (e.ctrlKey && e.key === 'u') {
+    e.preventDefault();
+  }
+});
+
+fetchData();
+setInterval(fetchData, REFRESH_MS);
+</script>
 </body>
 </html>
