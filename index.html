@@ -227,8 +227,11 @@ footer {
 </div>
 
 <script>
-// Obfuscation sederhana untuk API endpoint
+// File JavaScript terpisah (biasanya disimpan sebagai script.js)
+// Untuk keperluan contoh, tetap disimpan inline
+
 const REFRESH_MS = 5000;
+
 let lastData = {};
 let firstLoad = true;
 
@@ -242,36 +245,25 @@ function diffSymbol(n) {
          `<span style="color:var(--text-muted);">0</span>`;
 }
 
-// Fungsi untuk menyamarkan API endpoint dengan encoding sederhana
+// Fungsi untuk menyamarkan API endpoint - DIPERBAIKI
 function getApiUrl() {
-  // Encoding sederhana untuk menyembunyikan endpoint
-  const encoded = btoa("apikujs").replace(/=/g, '');
-  return `https://generich.my.id/${encoded}`;
-}
-
-// Fungsi untuk membuat request dengan header tambahan
-async function makeRequest() {
-  const timestamp = Date.now();
-  const token = btoa(`motion-ime-${timestamp}`).replace(/=/g, '');
-  
-  const response = await fetch(getApiUrl(), {
-    method: 'GET',
-    headers: {
-      'X-Requested-With': 'XMLHttpRequest',
-      'X-Timestamp': timestamp,
-      'X-Token': token,
-      'Accept': 'application/json'
-    },
-    cache: 'no-store'
-  });
-  
-  return response;
+  // Tetap menggunakan endpoint asli yang berfungsi
+  const base = "generich";
+  const domain = "my.id";
+  const path = "apivote";
+  return `https://${base}.${domain}/${path}`;
 }
 
 async function fetchData() {
   const status = document.getElementById("status");
   try {
-    const res = await makeRequest();
+    const apiUrl = getApiUrl();
+    const res = await fetch(apiUrl + "?_=" + Date.now(), { 
+      cache: "no-store",
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
     
     if (!res.ok) throw new Error("HTTP " + res.status);
     const json = await res.json();
@@ -316,33 +308,27 @@ async function fetchData() {
   }
 }
 
-// Mencegah klik kanan (hambatan kecil)
+// Tambahan untuk membuat sedikit lebih sulit di-inspect
 document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
-  return false;
 });
 
-// Mencegah shortcut keyboard untuk Developer Tools (tidak efektif di semua browser)
 document.addEventListener('keydown', function(e) {
-  // F12
-  if(e.keyCode === 123) {
+  // Block F12
+  if (e.key === 'F12') {
     e.preventDefault();
-    return false;
   }
-  // Ctrl+Shift+I
-  if(e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+  // Block Ctrl+Shift+I
+  if (e.ctrlKey && e.shiftKey && e.key === 'I') {
     e.preventDefault();
-    return false;
   }
-  // Ctrl+Shift+J
-  if(e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+  // Block Ctrl+Shift+J
+  if (e.ctrlKey && e.shiftKey && e.key === 'J') {
     e.preventDefault();
-    return false;
   }
-  // Ctrl+U
-  if(e.ctrlKey && e.keyCode === 85) {
+  // Block Ctrl+U
+  if (e.ctrlKey && e.key === 'u') {
     e.preventDefault();
-    return false;
   }
 });
 
