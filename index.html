@@ -7,16 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --primary-blue: #1e88e5;
-  --dark-blue: #0d47a1;
-  --light-blue: #64b5f6;
+  --primary-color: #6c5ce7;
+  --secondary-color: #a29bfe;
+  --accent-color: #fd79a8;
   --dark-bg: #0a0f1c;
-  --card-bg: rgba(13, 71, 161, 0.1);
-  --text-light: #e3f2fd;
-  --text-muted: #90caf9;
-  --success: #4caf50;
-  --danger: #f44336;
-  --warning: #ff9800;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --text-light: #f0f4fa;
+  --text-muted: #8da5c9;
+  --success: #00e47a;
+  --danger: #ff5c5c;
+  --warning: #ffe74c;
 }
 
 body {
@@ -42,7 +42,11 @@ body {
 h1 {
   font-size: 2.2em;
   margin-bottom: 5px;
-  color: var(--primary-blue);
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
 }
 
 .subtitle {
@@ -59,7 +63,7 @@ h1 {
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(30, 136, 229, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 table {
@@ -71,7 +75,7 @@ table {
 }
 
 thead {
-  background: rgba(13, 71, 161, 0.3);
+  background: rgba(15, 27, 51, 0.8);
 }
 
 th, td {
@@ -81,12 +85,12 @@ th, td {
 
 th {
   font-weight: 600;
-  color: var(--light-blue);
+  color: var(--secondary-color);
 }
 
 tbody tr {
   transition: all 0.3s ease;
-  border-bottom: 1px solid rgba(30, 136, 229, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 tbody tr:last-child {
@@ -94,23 +98,23 @@ tbody tr:last-child {
 }
 
 tbody tr:hover {
-  background: rgba(30, 136, 229, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   transform: translateY(-2px);
 }
 
 .rank-1 {
-  background: linear-gradient(90deg, rgba(255, 152, 0, 0.2), transparent);
+  background: linear-gradient(90deg, rgba(255, 231, 76, 0.2), transparent);
   border-left: 4px solid var(--warning);
 }
 
 .rank-2 {
-  background: linear-gradient(90deg, rgba(189, 189, 189, 0.2), transparent);
-  border-left: 4px solid #bdbdbd;
+  background: linear-gradient(90deg, rgba(192, 192, 192, 0.2), transparent);
+  border-left: 4px solid #c0c0c0;
 }
 
 .rank-3 {
-  background: linear-gradient(90deg, rgba(141, 110, 99, 0.2), transparent);
-  border-left: 4px solid #8d6e63;
+  background: linear-gradient(90deg, rgba(205, 127, 50, 0.2), transparent);
+  border-left: 4px solid #cd7f32;
 }
 
 .up {
@@ -138,12 +142,12 @@ footer {
   margin-bottom: 20px;
   padding: 10px;
   border-radius: 8px;
-  background: rgba(30, 136, 229, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .loading {
   text-align: center;
-  color: var(--light-blue);
+  color: var(--secondary-color);
   font-size: 14px;
 }
 
@@ -192,34 +196,9 @@ footer {
     opacity: 1;
   }
 }
-
-/* Sembunyikan elemen dari developer tools */
-.no-inspect {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* Sembunyikan konten saat inspect */
-body {
-  position: relative;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  pointer-events: none;
-  z-index: 9999;
-}
 </style>
 </head>
-<body class="no-inspect">
+<body>
 <div class="container">
   <div class="header">
     <h1>📊 Motion Ime Fest — Live Vote Rankings</h1>
@@ -248,29 +227,11 @@ body::after {
 </div>
 
 <script>
-// Deteksi developer tools
-function detectDevTools() {
-  const threshold = 160;
-  const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-  const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-  
-  if (widthThreshold || heightThreshold) {
-    document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;color:white;font-size:24px;">Access Restricted</div>';
-    throw new Error("Developer Tools Detected");
-  }
-}
-
-// Cek secara berkala
-setInterval(detectDevTools, 1000);
-
-// Fungsi untuk mendapatkan URL API yang disamarkan
-function getApiUrl() {
-  // Encode base64 sederhana untuk menyamarkan URL
-  const encoded = btoa("aHR0cHM6Ly9nZW5lcmljaC5teS5pZC9hcGl2b3Rl");
-  return atob(encoded);
-}
+// File JavaScript terpisah (biasanya disimpan sebagai script.js)
+// Untuk keperluan contoh, tetap disimpan inline
 
 const REFRESH_MS = 5000;
+
 let lastData = {};
 let firstLoad = true;
 
@@ -284,25 +245,27 @@ function diffSymbol(n) {
          `<span style="color:var(--text-muted);">0</span>`;
 }
 
+// Fungsi untuk menyamarkan API endpoint
+function getApiUrl() {
+  // Simulasi obfuscation sederhana
+  const base = "generich";
+  const domain = "my.id";
+  const path = "apivote";
+  return `https://${base}.${domain}/${path}`;
+}
+
 async function fetchData() {
   const status = document.getElementById("status");
   try {
     const apiUrl = getApiUrl();
-    const timestamp = new Date().getTime();
-    
-    // Buat request dengan header khusus
-    const res = await fetch(`${apiUrl}?_=${timestamp}`, { 
-      method: 'GET',
-      cache: 'no-cache',
+    const res = await fetch(apiUrl + "?_=" + Date.now(), { 
+      cache: "no-store",
       headers: {
-        'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      referrerPolicy: 'no-referrer'
+        'Accept': 'application/json'
+      }
     });
     
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    
+    if (!res.ok) throw new Error("HTTP " + res.status);
     const json = await res.json();
     if (!json.success || !json.data) throw new Error("Invalid response");
 
@@ -339,19 +302,14 @@ async function fetchData() {
     firstLoad = false;
 
   } catch (err) {
-    console.error("Error fetching data");
-    status.innerHTML = `<span class="status-error">❌ Gagal memuat data. Silakan refresh halaman.</span>`;
+    console.error(err);
+    status.innerHTML = `<span class="status-error">❌ Gagal memuat data: ${err.message}</span>`;
     status.classList.remove("loading", "pulse");
   }
 }
 
-// Coba fetch data
-try {
-  fetchData();
-  setInterval(fetchData, REFRESH_MS);
-} catch (e) {
-  console.error("Initialization error");
-}
+fetchData();
+setInterval(fetchData, REFRESH_MS);
 </script>
 </body>
 </html>
