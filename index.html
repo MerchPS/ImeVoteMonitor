@@ -23,6 +23,7 @@ tbody tr:hover{background:rgba(255,255,255,0.05)}
 footer{text-align:center;margin-top:20px;font-size:13px;color:#8da5c9}
 #status{text-align:center;font-size:14px;color:#8da5c9;margin-top:10px}
 .loading{text-align:center;color:#6fa3ff;font-size:14px}
+.error{color:#ff6b6b;text-align:center}
 </style>
 `);
 </script>
@@ -46,7 +47,9 @@ document.write(`
       <th>Last Updated</th>
     </tr>
   </thead>
-  <tbody></tbody>
+  <tbody>
+    <tr><td colspan="6" style="text-align:center;color:#8da5c9;">Memuat data...</td></tr>
+  </tbody>
 </table>
 
 <footer>⚡ Data auto-refresh setiap 5 detik — Motion Ime Fest System</footer>
@@ -55,44 +58,66 @@ document.write(`
 
 <script>
 (function() {
-    const _0x3c5a = ['https://', 'gener', 'ich', '.my', '.id', '/ap', 'ivo', 'te'];
     const _0x4d7b = 5000;
-    
     let _0x29c3 = {};
     let _0x5e82 = true;
+    let _0xretryCount = 0;
+    const _0xmaxRetries = 3;
+
+    // Multiple proxy options untuk fallback
+    const _0xproxyList = [
+        'https://api.allorigins.win/raw?url=',
+        'https://corsproxy.io/?',
+        'https://cors-anywhere.herokuapp.com/',
+        '' // Direct attempt
+    ];
+
+    // Encoded target URL
+    const _0xtargetUrl = 'https' + '://' + 'gener' + 'ich' + '.' + 'my' + '.' + 'id' + '/' + 'apivote';
 
     async function _0x4e6d() {
+        const _0xproxyIndex = _0xretryCount % _0xproxyList.length;
+        const _0xproxy = _0xproxyList[_0xproxyIndex];
+        
         try {
-            // Build URL dari bagian-bagian yang terpisah
-            const _0x3b81 = _0x3c5a[0] + _0x3c5a[1] + _0x3c5a[2] + _0x3c5a[3] + _0x3c5a[4] + _0x3c5a[5] + _0x3c5a[6] + _0x3c5a[7];
-            
-            // Tambahkan timestamp untuk menghindari cache
-            const timestamp = Date.now();
-            const fullUrl = _0x3b81 + '?_=' + timestamp;
-            
-            console.log('Fetching from:', fullUrl); // Debug line
-            
-            const _0x3e94 = await fetch(fullUrl, {
+            let _0xfetchUrl;
+            if (_0xproxy) {
+                _0xfetchUrl = _0xproxy + encodeURIComponent(_0xtargetUrl + '?_=' + Date.now());
+            } else {
+                _0xfetchUrl = _0xtargetUrl + '?_=' + Date.now();
+            }
+
+            console.log('Attempting fetch with proxy', _0xproxyIndex, ':', _0xfetchUrl);
+
+            const _0x3e94 = await fetch(_0xfetchUrl, {
                 method: 'GET',
                 headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 mode: 'cors',
-                credentials: 'same-origin'
+                cache: 'no-cache'
             });
-            
+
             if (!_0x3e94.ok) {
-                throw new Error(`HTTP ${_0x3e94.status} - ${_0x3e94.statusText}`);
+                throw new Error(`HTTP ${_0x3e94.status}`);
             }
-            
+
             const _0x4a2b = await _0x3e94.json();
+            _0xretryCount = 0; // Reset retry count on success
             return _0x4a2b;
-            
+
         } catch (_0x3f9d) {
-            console.error('Fetch error:', _0x3f9d);
-            throw new Error('Network error: ' + _0x3f9d.message);
+            _0xretryCount++;
+            console.error(`Proxy attempt ${_0xproxyIndex} failed:`, _0x3f9d);
+            
+            if (_0xretryCount < _0xmaxRetries * _0xproxyList.length) {
+                console.log(`Retrying with next proxy... (attempt ${_0xretryCount})`);
+                // Will automatically try next proxy on next call
+            } else {
+                throw new Error('All proxy attempts failed: ' + _0x3f9d.message);
+            }
+            throw _0x3f9d;
         }
     }
 
@@ -106,17 +131,47 @@ document.write(`
                `<span style="color:#8da5c9;">0</span>`;
     }
 
-    async function _0x5d9f() {
+    function _0xshowError(_0xmessage) {
         const _0x4c77 = document.getElementById("status");
+        const _0x3d4a = document.querySelector("#rankingTable tbody");
+        
+        _0x4c77.innerHTML = `<span class="error">❌ ${_0xmessage}</span>`;
+        _0x3d4a.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align:center;color:#8da5c9;">
+                    <div style="margin:10px 0;">Tidak dapat terhubung ke server</div>
+                    <button onclick="location.reload()" style="background:#00e47a;color:#000;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;font-weight:600;">
+                        🔄 Coba Lagi
+                    </button>
+                </td>
+            </tr>
+        `;
+    }
+
+    function _0xshowLoading() {
+        const _0x4c77 = document.getElementById("status");
+        const _0x3d4a = document.querySelector("#rankingTable tbody");
+        
+        _0x4c77.innerHTML = `<span class="loading">🔄 Memuat data... (Attempt ${_0xretryCount + 1})</span>`;
+        _0x3d4a.innerHTML = `
+            <tr><td colspan="6" style="text-align:center;color:#8da5c9;">Menghubungkan ke server...</td></tr>
+        `;
+    }
+
+    async function _0x5d9f() {
+        _0xshowLoading();
+        
         try {
             const _0x2b8a = await _0x4e6d();
             
             if (!_0x2b8a || !_0x2b8a.success || !_0x2b8a.data) {
-                throw new Error("Invalid response format");
+                throw new Error("Format data tidak valid dari server");
             }
 
             const _0x1e5d = _0x2b8a.data.sort((_0x3a7b, _0x2f1d) => _0x2f1d.votes - _0x3a7b.votes);
             const _0x3d4a = document.querySelector("#rankingTable tbody");
+            const _0x4c77 = document.getElementById("status");
+            
             _0x3d4a.innerHTML = "";
 
             _0x1e5d.forEach((_0x2e9c, _0x1f6a) => {
@@ -146,22 +201,20 @@ document.write(`
 
         } catch (_0x3a7f) {
             console.error('Data processing error:', _0x3a7f);
-            _0x4c77.innerHTML = "❌ Gagal memuat data. Cek koneksi internet atau coba refresh halaman.";
             
-            // Fallback: tampilkan data dummy untuk testing
-            if (_0x5e82) {
-                const _0x3d4a = document.querySelector("#rankingTable tbody");
-                _0x3d4a.innerHTML = `
-                    <tr><td colspan="6" style="text-align:center;color:#8da5c9;">Sedang memuat data...</td></tr>
-                `;
+            if (_0xretryCount >= _0xmaxRetries * _0xproxyList.length) {
+                _0xshowError("Tidak dapat terhubung ke server. Cek koneksi internet Anda.");
+            } else {
+                // Auto-retry akan terjadi pada interval berikutnya
+                _0xshowError(`Mencoba koneksi... (${_0xretryCount + 1}/${_0xmaxRetries * _0xproxyList.length})`);
             }
         }
     }
 
-    // Coba fetch data saat halaman load
+    // Initial load
     setTimeout(_0x5d9f, 100);
     
-    // Setup auto-refresh
+    // Auto-refresh
     setInterval(_0x5d9f, _0x4d7b);
 })();
 </script>
