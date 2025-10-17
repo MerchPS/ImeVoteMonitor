@@ -54,12 +54,70 @@ body {
   overflow-x: hidden;
 }
 
+/* Loading Screen */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--darker-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+
+.loading-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-logo {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.loading-progress {
+  width: 300px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.loading-progress-bar {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+.loading-text {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
 /* Glassmorphism Container */
 .main-wrapper {
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
   min-height: 100vh;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.main-wrapper.loaded {
+  opacity: 1;
 }
 
 /* Header Styles */
@@ -252,6 +310,11 @@ body {
   object-fit: cover;
   border: 2px solid rgba(255, 255, 255, 0.2);
   transition: var(--transition);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.profile-image.loaded {
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .rank-1 .profile-image {
@@ -736,7 +799,19 @@ a:focus {
 </style>
 </head>
 <body>
-<div class="main-wrapper">
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-logo">
+    <i class="fas fa-trophy"></i> Motion Ime Fest
+  </div>
+  <div class="loading-progress">
+    <div class="loading-progress-bar" id="loadingProgress"></div>
+  </div>
+  <div class="loading-text" id="loadingText">Loading Assets...</div>
+</div>
+
+<!-- Main Content -->
+<div class="main-wrapper" id="mainContent">
   <!-- Header Section -->
   <header class="header-main">
     <h1 class="page-title">
@@ -793,11 +868,15 @@ a:focus {
 </div>
 
 <script>
+// Constants
 const REFRESH_MS = 5000;
+
+// State management
 let lastData = {};
 let firstLoad = true;
+let imageCache = new Map();
 
-// Profile image mapping
+// Profile image mapping with fallback
 const profileImages = {
   'XXKNJT': 'https://motionimefest.id/wp-content/uploads/2025/10/XXKNJT.jpg',
   'Boo': 'https://motionimefest.id/wp-content/uploads/2025/10/Boo.jpg',
@@ -809,7 +888,100 @@ const profileImages = {
   'Searchforemma': 'https://motionimefest.id/wp-content/uploads/2025/10/searchforemma.jpg'
 };
 
+// Cache management
+class AssetCache {
+  constructor() {
+    this.cacheName = 'motion-ime-assets';
+    this.imagesToLoad = Object.values(profileImages);
+  }
+
+  async preloadImages() {
+    const loadingProgress = document.getElementById('loadingProgress');
+    const loadingText = document.getElementById('loadingText');
+    const totalImages = this.imagesToLoad.length;
+    let loadedCount = 0;
+
+    const loadPromises = this.imagesToLoad.map(async (imageUrl, index) => {
+      try {
+        // Check cache first
+        const cached = await this.getCachedImage(imageUrl);
+        if (cached) {
+          imageCache.set(imageUrl, cached);
+        } else {
+          // Load and cache new image
+          const img = new Image();
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = imageUrl;
+          });
+          
+          // Cache the image
+          await this.cacheImage(imageUrl, img);
+          imageCache.set(imageUrl, img);
+        }
+
+        loadedCount++;
+        const progress = Math.round((loadedCount / totalImages) * 100);
+        loadingProgress.style.width = `${progress}%`;
+        loadingText.textContent = `Loading Assets... ${progress}%`;
+
+      } catch (error) {
+        console.warn(`Failed to load image: ${imageUrl}`, error);
+        loadedCount++;
+        const progress = Math.round((loadedCount / totalImages) * 100);
+        loadingProgress.style.width = `${progress}%`;
+      }
+    });
+
+    await Promise.allSettled(loadPromises);
+  }
+
+  async cacheImage(url, image) {
+    try {
+      // Simple in-memory cache for demo
+      // In production, you might want to use Service Worker Cache API
+      localStorage.setItem(`cache_${btoa(url)}`, url);
+    } catch (error) {
+      console.warn('Caching failed:', error);
+    }
+  }
+
+  async getCachedImage(url) {
+    try {
+      const cached = localStorage.getItem(`cache_${btoa(url)}`);
+      if (cached) {
+        const img = new Image();
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+          img.src = cached;
+        });
+        return img;
+      }
+    } catch (error) {
+      console.warn('Cache retrieval failed:', error);
+    }
+    return null;
+  }
+
+  clearCache() {
+    try {
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('cache_')) {
+          localStorage.removeItem(key);
+        }
+      });
+      imageCache.clear();
+    } catch (error) {
+      console.warn('Cache clearing failed:', error);
+    }
+  }
+}
+
+// Utility functions
 function formatNumber(num) {
+  if (num === undefined || num === null) return '0';
   return new Intl.NumberFormat('en-US').format(num);
 }
 
@@ -824,7 +996,7 @@ function getTrendSymbol(change) {
 }
 
 function getProfileImage(name) {
-  return profileImages[name] || 'https://via.placeholder.com/50/6c5ce7/ffffff?text=' + name.charAt(0);
+  return profileImages[name] || `https://via.placeholder.com/50/6c5ce7/ffffff?text=${name.charAt(0)}`;
 }
 
 function getApiUrl() {
@@ -834,6 +1006,35 @@ function getApiUrl() {
   return `https://${base}.${domain}/${path}`;
 }
 
+// Image loading with cache
+async function loadProfileImage(name, imgElement) {
+  const imageUrl = getProfileImage(name);
+  
+  // Check cache first
+  if (imageCache.has(imageUrl)) {
+    imgElement.src = imageCache.get(imageUrl).src;
+    imgElement.classList.add('loaded');
+    return;
+  }
+
+  // Load image with error handling
+  const img = new Image();
+  img.onload = () => {
+    imgElement.src = imageUrl;
+    imgElement.classList.add('loaded');
+    imageCache.set(imageUrl, img);
+  };
+  
+  img.onerror = () => {
+    // Fallback to placeholder
+    imgElement.src = `https://via.placeholder.com/50/6c5ce7/ffffff?text=${name.charAt(0)}`;
+    imgElement.classList.add('loaded');
+  };
+  
+  img.src = imageUrl;
+}
+
+// Main data fetching
 async function fetchRankingData() {
   const statusElement = document.getElementById("status-info");
   try {
@@ -851,7 +1052,7 @@ async function fetchRankingData() {
     if (!jsonData.success || !jsonData.data) throw new Error("Invalid response data");
 
     // Sort data by votes
-    const sortedData = jsonData.data.sort((a, b) => b.votes - a.votes);
+    const sortedData = jsonData.data.sort((a, b) => (b.votes || 0) - (a.votes || 0));
     const tableBody = document.querySelector("#rankingTable tbody");
     
     // Clear existing rows
@@ -859,8 +1060,8 @@ async function fetchRankingData() {
 
     // Populate table with new data
     sortedData.forEach((streamer, index) => {
-      const previousVotes = lastData[streamer.id]?.votes ?? streamer.votes;
-      const voteChange = streamer.votes - previousVotes;
+      const previousVotes = lastData[streamer.id]?.votes ?? (streamer.votes || 0);
+      const voteChange = (streamer.votes || 0) - previousVotes;
 
       const tableRow = document.createElement("tr");
       tableRow.className = `table-row ${index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : ''}`;
@@ -876,7 +1077,10 @@ async function fetchRankingData() {
         </td>
         <td class="table-cell">
           <div class="streamer-profile">
-            <img src="${getProfileImage(streamer.name)}" alt="${streamer.name}" class="profile-image" onerror="this.src='https://via.placeholder.com/50/6c5ce7/ffffff?text=${streamer.name.charAt(0)}'">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Crect width='50' height='50' fill='%236c5ce7'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='20' fill='white'%3E${streamer.name.charAt(0)}%3C/text%3E%3C/svg%3E" 
+                 alt="${streamer.name}" 
+                 class="profile-image"
+                 data-streamer="${streamer.name}">
             <div class="streamer-info">
               <div class="streamer-name">${streamer.name}</div>
               <div class="streamer-handle">@${streamer.name.toLowerCase()}</div>
@@ -898,7 +1102,16 @@ async function fetchRankingData() {
       `;
       
       tableBody.appendChild(tableRow);
-      lastData[streamer.id] = { votes: streamer.votes, views: streamer.views };
+      lastData[streamer.id] = { 
+        votes: streamer.votes || 0, 
+        views: streamer.views || 0 
+      };
+
+      // Load profile image after DOM insertion
+      const imgElement = tableRow.querySelector('.profile-image');
+      if (imgElement) {
+        loadProfileImage(streamer.name, imgElement);
+      }
     });
 
     // Update status with totals
@@ -955,20 +1168,36 @@ window.addEventListener('resize', function() {
   });
 });
 
-// Initialize and start auto-refresh
-fetchRankingData();
-setInterval(fetchRankingData, REFRESH_MS);
+// Initialize application
+async function initializeApp() {
+  const assetCache = new AssetCache();
+  
+  try {
+    // Preload all images with progress
+    await assetCache.preloadImages();
+    
+    // Show main content
+    setTimeout(() => {
+      document.getElementById('loadingScreen').classList.add('hidden');
+      document.getElementById('mainContent').classList.add('loaded');
+      
+      // Start data fetching
+      fetchRankingData();
+      setInterval(fetchRankingData, REFRESH_MS);
+    }, 500);
+    
+  } catch (error) {
+    console.error('Initialization failed:', error);
+    // Fallback: show content even if assets fail
+    document.getElementById('loadingScreen').classList.add('hidden');
+    document.getElementById('mainContent').classList.add('loaded');
+    fetchRankingData();
+    setInterval(fetchRankingData, REFRESH_MS);
+  }
+}
 
-// Add loading animation to status on initial load
-document.addEventListener('DOMContentLoaded', function() {
-  const statusElement = document.getElementById("status-info");
-  statusElement.innerHTML = `
-    <div class="status-loading pulse-loading">
-      <i class="fas fa-sync-alt fa-spin"></i>
-      Initializing live ranking system...
-    </div>
-  `;
-});
+// Start the application
+document.addEventListener('DOMContentLoaded', initializeApp);
 </script>
 </body>
 </html>
