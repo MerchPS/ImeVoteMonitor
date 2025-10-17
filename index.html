@@ -7,63 +7,133 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 /* CSS Variables dengan nama acak */
+<style>
+/* --- 1. CSS Variables (Root) --- */
 :root {
-  --warna-utama: #6c5ce7;
-  --warna-kedua: #a29bfe;
-  --warna-aksen: #fd79a8;
-  --background-gelap: #0a0f1c;
-  --kartu-bg: rgba(255, 255, 255, 0.05);
-  --teks-terang: #f0f4fa;
-  --teks-redup: #8da5c9;
-  --sukses-warna: #00e47a;
-  --bahaya-warna: #ff5c5c;
-  --peringatan-warna: #ffe74c;
+  /* Colors */
+  --color-primary: #6c5ce7;
+  --color-secondary: #a29bfe;
+  --color-accent: #fd79a8;
+  --color-success: #00e47a;
+  --color-danger: #ff5c5c;
+  --color-warning: #ffe74c;  /* Gold */
+  --color-silver: #c0c0c0;   /* Silver */
+  --color-bronze: #cd7f32;   /* Bronze */
+
+  /* Backgrounds */
+  --bg-dark: #0a0f1c;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-table-header: rgba(15, 27, 51, 0.8);
+  --bg-gradient: radial-gradient(circle at top left, var(--bg-dark), #000);
+
+  /* Text */
+  --text-light: #f0f4fa;
+  --text-muted: #8da5c9;
+  --font-family-base: 'Inter', sans-serif;
+  --font-monospace: 'Courier New', monospace;
+
+  /* Sizing & Effects */
+  --border-radius-m: 12px;
+  --border-radius-s: 8px;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --transition-smooth: all 0.3s ease;
 }
 
-/* Body styles - tidak terstruktur */
-body {
-  font-family: 'Inter', sans-serif;
-  background: radial-gradient(circle at top left, var(--background-gelap), #000);
-  color: var(--teks-terang);
+/* --- 2. Global Styles --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-family-base);
+  background: var(--bg-gradient);
+  color: var(--text-light);
   margin: 0;
-  padding: 15px;
+  padding: 0;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 1.5rem; /* 24px */
   min-height: 100vh;
 }
 
+/* --- 3. Layout --- */
 .container-main {
   max-width: 1200px;
   margin: 0 auto;
 }
 
+.footer-info {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* --- 4. Components --- */
+
+/* Header */
 .header-section {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 2rem; /* 32px */
 }
 
 .judul-utama {
-  font-size: 1.8em;
-  margin-bottom: 5px;
-  color: var(--warna-utama);
-  display: inline-block;
+  /* Fluid typography: min, preferred, max */
+  font-size: clamp(1.5rem, 4vw, 2.2rem); 
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: var(--color-primary);
 }
 
 .sub-judul {
-  text-align: center;
-  font-size: 1em;
-  color: var(--teks-redup);
-  margin-top: 0;
-  margin-bottom: 20px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: var(--text-muted);
+  margin: 0 0 1.5rem 0;
+  font-weight: 400;
 }
 
+/* Status Info */
+#status-info {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  border-radius: var(--border-radius-s);
+  background: var(--bg-card);
+  transition: background-color 0.3s ease;
+}
+
+.loading-state {
+  color: var(--color-secondary);
+}
+
+.status-update {
+  color: var(--color-success);
+}
+
+.status-error {
+  color: var(--color-danger);
+}
+
+/* Card & Table Wrapper */
 .kartu-container {
-  background: var(--kartu-bg);
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: var(--bg-card);
+  border-radius: var(--border-radius-m);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  overflow: hidden; /* Contain wrapper */
 }
 
 .wrapper-tabel {
@@ -71,250 +141,71 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Table */
 .tabel-data {
   width: 100%;
   border-collapse: collapse;
-  border-radius: 10px;
-  overflow: hidden;
-  font-size: 14px;
+  font-size: 0.9rem; /* ~14px */
   min-width: 600px;
 }
 
 .header-tabel {
-  background: rgba(15, 27, 51, 0.8);
+  background: var(--bg-table-header);
 }
 
-.th-style, .td-style {
-  padding: 12px 10px;
+.th-style, 
+.td-style {
+  padding: 0.8rem 1rem;
   text-align: left;
   white-space: nowrap;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .th-style {
   font-weight: 600;
-  color: var(--warna-kedua);
-  font-size: 0.9em;
+  color: var(--color-secondary);
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .baris-data {
-  transition: all 0.3s ease;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.baris-data:last-child {
+.baris-data:last-child .td-style {
   border-bottom: none;
 }
 
 .baris-data:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--bg-card-hover);
 }
 
+/* Rank Highlights */
 .peringkat-1 {
-  background: linear-gradient(90deg, rgba(255, 231, 76, 0.2), transparent);
-  border-left: 4px solid var(--peringatan-warna);
+  background: linear-gradient(90deg, rgba(255, 231, 76, 0.15), transparent);
+  border-left: 4px solid var(--color-warning);
 }
-
 .peringkat-2 {
-  background: linear-gradient(90deg, rgba(192, 192, 192, 0.2), transparent);
-  border-left: 4px solid #c0c0c0;
+  background: linear-gradient(90deg, rgba(192, 192, 192, 0.15), transparent);
+  border-left: 4px solid var(--color-silver);
 }
-
 .peringkat-3 {
-  background: linear-gradient(90deg, rgba(205, 127, 50, 0.2), transparent);
-  border-left: 4px solid #cd7f32;
+  background: linear-gradient(90deg, rgba(205, 127, 50, 0.15), transparent);
+  border-left: 4px solid var(--color-bronze);
 }
+/* Style .peringkat-1::before dihapus karena redundan dengan style di atas */
 
+
+/* --- 5. Utility Classes --- */
 .naik {
-  color: var(--sukses-warna);
+  color: var(--color-success);
   font-weight: 600;
 }
 
 .turun {
-  color: var(--bahaya-warna);
+  color: var(--color-danger);
   font-weight: 600;
-}
-
-.footer-info {
-  text-align: center;
-  margin-top: 25px;
-  font-size: 12px;
-  color: var(--teks-redup);
-  padding: 0 10px;
-}
-
-#status-info {
-  text-align: center;
-  font-size: 13px;
-  color: var(--teks-redup);
-  margin-top: 10px;
-  margin-bottom: 15px;
-  padding: 8px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.loading-state {
-  text-align: center;
-  color: var(--warna-kedua);
-  font-size: 13px;
-}
-
-.status-update {
-  color: var(--sukses-warna);
-}
-
-.status-error {
-  color: var(--bahaya-warna);
-}
-
-/* Mobile responsive - gaya acak */
-@media (max-width: 768px) {
-  body {
-    padding: 10px;
-  }
-  
-  .container-main {
-    padding: 0 5px;
-  }
-  
-  .judul-utama {
-    font-size: 1.5em;
-    margin-bottom: 8px;
-  }
-  
-  .sub-judul {
-    font-size: 0.9em;
-    margin-bottom: 15px;
-  }
-  
-  .kartu-container {
-    padding: 12px;
-    border-radius: 10px;
-    margin: 0 -5px;
-  }
-  
-  .tabel-data {
-    font-size: 13px;
-    min-width: 550px;
-  }
-  
-  .th-style, .td-style {
-    padding: 10px 8px;
-  }
-  
-  .th-style {
-    font-size: 0.85em;
-  }
-  
-  .mobile-compact .td-style:nth-child(1),
-  .mobile-compact .td-style:nth-child(4),
-  .mobile-compact .td-style:nth-child(5) {
-    font-size: 0.85em;
-  }
-  
-  .footer-info {
-    font-size: 11px;
-    margin-top: 20px;
-  }
-  
-  #status-info {
-    font-size: 12px;
-    padding: 6px;
-    margin-bottom: 12px;
-  }
-}
-
-/* Small mobile */
-@media (max-width: 480px) {
-  body {
-    padding: 8px;
-  }
-  
-  .judul-utama {
-    font-size: 1.3em;
-  }
-  
-  .sub-judul {
-    font-size: 0.85em;
-  }
-  
-  .kartu-container {
-    padding: 10px;
-  }
-  
-  .tabel-data {
-    font-size: 12px;
-    min-width: 500px;
-  }
-  
-  .th-style, .td-style {
-    padding: 8px 6px;
-  }
-  
-  .th-style {
-    font-size: 0.8em;
-  }
-  
-  .footer-info {
-    font-size: 10px;
-  }
-}
-
-/* Touch improvements */
-@media (hover: none) {
-  .baris-data:hover {
-    background: transparent;
-    transform: none;
-  }
-  
-  .baris-data:active {
-    background: rgba(255, 255, 255, 0.08);
-  }
-}
-
-.pulse-effect {
-  animation: pulseAnimation 2s infinite;
-}
-
-@keyframes pulseAnimation {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* Scrollbar styling */
-.wrapper-tabel::-webkit-scrollbar {
-  height: 6px;
-}
-
-.wrapper-tabel::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-
-.wrapper-tabel::-webkit-scrollbar-thumb {
-  background: var(--warna-utama);
-  border-radius: 3px;
-}
-
-.wrapper-tabel::-webkit-scrollbar-thumb:hover {
-  background: var(--warna-kedua);
-}
-
-/* Additional random styles untuk membuat lebih unik */
-.data-container {
-  position: relative;
-}
-
-.table-header-cell {
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .rank-badge {
@@ -326,19 +217,33 @@ body {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
   margin-right: 8px;
+  font-weight: 600;
 }
 
 .vote-count {
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-monospace);
   font-weight: bold;
 }
 
 .last-update {
-  font-size: 0.85em;
+  font-size: 0.9em;
   opacity: 0.8;
 }
 
-/* Animasi tambahan */
+.pulse-effect {
+  animation: pulseAnimation 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* --- 6. Animations --- */
+@keyframes pulseAnimation {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -350,21 +255,85 @@ body {
   }
 }
 
-.baris-data {
-  animation: slideIn 0.3s ease-out;
+/* --- 7. Scrollbar --- */
+.wrapper-tabel::-webkit-scrollbar {
+  height: 8px; /* Sedikit lebih tebal agar mudah di-drag */
 }
 
-/* Gradient backgrounds untuk ranking */
-.peringkat-1::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, rgba(255, 231, 76, 0.1), transparent);
-  z-index: -1;
+.wrapper-tabel::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
 }
+
+.wrapper-tabel::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+.wrapper-tabel::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary);
+}
+
+/* --- 8. Media Queries (Responsive) --- */
+@media (max-width: 768px) {
+  body {
+    padding: 0.75rem; /* 12px */
+  }
+  
+  .kartu-container {
+    padding: 0.75rem;
+  }
+  
+  .tabel-data {
+    font-size: 0.85rem; /* ~13.5px */
+    min-width: 550px;
+  }
+  
+  .th-style, .td-style {
+    padding: 0.7rem 0.6rem;
+  }
+
+  /* Ini menggantikan fungsionalitas kelas .mobile-compact.
+    Tidak perlu lagi JS untuk menambah/menghapus kelas itu.
+  */
+  .td-style:nth-child(1), /* Rank */
+  .td-style:nth-child(4), /* Delta Votes */
+  .td-style:nth-child(5) { /* Views */
+    font-size: 0.9em; /* Relatif thd font-size tabel (0.85rem) */
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.5rem; /* 8px */
+  }
+
+  .kartu-container {
+    padding: 0.5rem;
+  }
+
+  .tabel-data {
+    font-size: 0.8rem; /* 12.8px */
+    min-width: 500px;
+  }
+
+  .th-style, .td-style {
+    padding: 0.6rem 0.5rem;
+  }
+}
+
+/* Touch improvements */
+@media (hover: none) {
+  .baris-data:hover {
+    background: transparent;
+    transform: none;
+  }
+  
+  .baris-data:active {
+    background: var(--bg-card-hover);
+  }
+}
+</style>
 </style>
 </head>
 <body>
