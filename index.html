@@ -8,223 +8,289 @@
 <style>
 :root {
   --primary-color: #6c5ce7;
+  --primary-dark: #5649c0;
   --secondary-color: #a29bfe;
   --accent-color: #fd79a8;
   --dark-bg: #0a0f1c;
+  --darker-bg: #050811;
   --card-bg: rgba(255, 255, 255, 0.05);
+  --card-hover: rgba(255, 255, 255, 0.08);
   --text-light: #f0f4fa;
   --text-muted: #8da5c9;
   --success: #00e47a;
+  --success-light: #00ff8c;
   --danger: #ff5c5c;
+  --danger-light: #ff7a7a;
   --warning: #ffe74c;
+  --silver: #c0c0c0;
+  --bronze: #cd7f32;
+  --border-radius: 16px;
+  --transition: all 0.3s ease;
 }
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Inter', sans-serif;
-  background: radial-gradient(circle at top left, var(--dark-bg), #000);
+  background: radial-gradient(ellipse at top left, var(--dark-bg) 0%, var(--darker-bg) 100%);
   color: var(--text-light);
   margin: 0;
-  padding: 15px;
+  padding: 20px;
   overflow-x: hidden;
   min-height: 100vh;
+  line-height: 1.6;
 }
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 .header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  position: relative;
 }
+
 h1 {
-  font-size: 1.8em;
-  margin-bottom: 5px;
-  color: #6c5ce7;
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   display: inline-block;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
+
 .subtitle {
   text-align: center;
-  font-size: 1em;
+  font-size: 1.1rem;
   color: var(--text-muted);
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-weight: 500;
 }
+
 .card {
   background: var(--card-bg);
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  overflow-x: auto;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  transition: var(--transition);
 }
+
+.card:hover {
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+  transform: translateY(-5px);
+}
+
 .table-container {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  font-size: 14px;
-  min-width: 600px;
+  font-size: 15px;
+  min-width: 650px;
 }
+
 thead {
-  background: rgba(15, 27, 51, 0.8);
+  background: linear-gradient(90deg, rgba(15, 27, 51, 0.9), rgba(15, 27, 51, 0.7));
+  backdrop-filter: blur(10px);
 }
+
 th, td {
-  padding: 12px 10px;
+  padding: 16px 14px;
   text-align: left;
   white-space: nowrap;
 }
+
 th {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--secondary-color);
-  font-size: 0.9em;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
+
 tbody tr {
-  transition: all 0.3s ease;
+  transition: var(--transition);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
 }
+
 tbody tr:last-child {
   border-bottom: none;
 }
+
 tbody tr:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--card-hover);
+  transform: scale(1.01);
 }
+
 .rank-1 {
-  background: linear-gradient(90deg, rgba(255, 231, 76, 0.2), transparent);
+  background: linear-gradient(90deg, rgba(255, 231, 76, 0.15), transparent);
   border-left: 4px solid var(--warning);
+  box-shadow: 0 0 15px rgba(255, 231, 76, 0.2);
 }
+
 .rank-2 {
-  background: linear-gradient(90deg, rgba(192, 192, 192, 0.2), transparent);
-  border-left: 4px solid #c0c0c0;
+  background: linear-gradient(90deg, rgba(192, 192, 192, 0.15), transparent);
+  border-left: 4px solid var(--silver);
+  box-shadow: 0 0 10px rgba(192, 192, 192, 0.1);
 }
+
 .rank-3 {
-  background: linear-gradient(90deg, rgba(205, 127, 50, 0.2), transparent);
-  border-left: 4px solid #cd7f32;
+  background: linear-gradient(90deg, rgba(205, 127, 50, 0.15), transparent);
+  border-left: 4px solid var(--bronze);
+  box-shadow: 0 0 10px rgba(205, 127, 50, 0.1);
 }
+
 .up {
-  color: var(--success);
-  font-weight: 600;
+  color: var(--success-light);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
 }
+
+.up::before {
+  content: "▲";
+  margin-right: 5px;
+  font-size: 0.8em;
+}
+
 .down {
-  color: var(--danger);
+  color: var(--danger-light);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.down::before {
+  content: "▼";
+  margin-right: 5px;
+  font-size: 0.8em;
+}
+
+.neutral {
+  color: var(--text-muted);
   font-weight: 600;
 }
+
 footer {
   text-align: center;
-  margin-top: 25px;
-  font-size: 12px;
-  color: var(--text-muted);
-  padding: 0 10px;
-}
-#status {
-  text-align: center;
+  margin-top: 30px;
   font-size: 13px;
   color: var(--text-muted);
-  margin-top: 10px;
-  margin-bottom: 15px;
-  padding: 8px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  padding: 0 10px;
+  opacity: 0.8;
 }
+
+#status {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 4px solid var(--primary-color);
+  transition: var(--transition);
+}
+
 .loading {
   text-align: center;
   color: var(--secondary-color);
-  font-size: 13px;
+  font-size: 14px;
 }
+
 .status-update {
   color: var(--success);
+  border-left-color: var(--success);
 }
+
 .status-error {
   color: var(--danger);
+  border-left-color: var(--danger);
 }
-/* Mobile Styles */
-@media (max-width: 768px) {
-  body {
-    padding: 10px;
-  }
-  .container {
-    padding: 0 5px;
-  }
-  h1 {
-    font-size: 1.5em;
-    margin-bottom: 8px;
-  }
-  .subtitle {
-    font-size: 0.9em;
-    margin-bottom: 15px;
-  }
-  .card {
-    padding: 12px;
-    border-radius: 10px;
-    margin: 0 -5px;
-  }
-  table {
-    font-size: 13px;
-    min-width: 550px;
-  }
-  th, td {
-    padding: 10px 8px;
-  }
-  th {
-    font-size: 0.85em;
-  }
-  .mobile-compact td:nth-child(1),
-  .mobile-compact td:nth-child(4),
-  .mobile-compact td:nth-child(5) {
-    font-size: 0.85em;
-  }
-  footer {
-    font-size: 11px;
-    margin-top: 20px;
-  }
-  #status {
-    font-size: 12px;
-    padding: 6px;
-    margin-bottom: 12px;
-  }
+
+/* Badge untuk ranking */
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 14px;
+  margin-right: 10px;
 }
-@media (max-width: 480px) {
-  body {
-    padding: 8px;
-  }
-  h1 {
-    font-size: 1.3em;
-  }
-  .subtitle {
-    font-size: 0.85em;
-  }
-  .card {
-    padding: 10px;
-  }
-  table {
-    font-size: 12px;
-    min-width: 500px;
-  }
-  th, td {
-    padding: 8px 6px;
-  }
-  th {
-    font-size: 0.8em;
-  }
-  footer {
-    font-size: 10px;
-  }
+
+.rank-1 .rank-badge {
+  background: var(--warning);
+  color: #000;
+  box-shadow: 0 0 10px rgba(255, 231, 76, 0.5);
 }
-@media (hover: none) {
-  tbody tr:hover {
-    background: transparent;
-    transform: none;
-  }
-  tbody tr:active {
-    background: rgba(255, 255, 255, 0.08);
-  }
+
+.rank-2 .rank-badge {
+  background: var(--silver);
+  color: #000;
 }
+
+.rank-3 .rank-badge {
+  background: var(--bronze);
+  color: #fff;
+}
+
+/* Animasi untuk data baru */
+@keyframes highlight {
+  0% { background-color: rgba(0, 228, 122, 0.3); }
+  100% { background-color: transparent; }
+}
+
+.highlight {
+  animation: highlight 2s ease;
+}
+
+/* Scrollbar styling */
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Pulse animation untuk loading */
 .pulse {
   animation: pulse 2s infinite;
 }
+
 @keyframes pulse {
   0% {
     opacity: 1;
@@ -236,19 +302,132 @@ footer {
     opacity: 1;
   }
 }
-.table-container::-webkit-scrollbar {
-  height: 6px;
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+  
+  .container {
+    padding: 0 5px;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .card {
+    padding: 15px;
+    border-radius: 14px;
+    margin: 0 -5px;
+  }
+  
+  table {
+    font-size: 14px;
+    min-width: 600px;
+  }
+  
+  th, td {
+    padding: 12px 10px;
+  }
+  
+  th {
+    font-size: 0.9rem;
+  }
+  
+  footer {
+    font-size: 12px;
+    margin-top: 25px;
+  }
+  
+  #status {
+    font-size: 13px;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
 }
-.table-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+  
+  table {
+    font-size: 13px;
+    min-width: 550px;
+  }
+  
+  th, td {
+    padding: 10px 8px;
+  }
+  
+  th {
+    font-size: 0.85rem;
+  }
+  
+  footer {
+    font-size: 11px;
+  }
 }
-.table-container::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 3px;
+
+/* Efek untuk perangkat tanpa hover (mobile) */
+@media (hover: none) {
+  tbody tr:hover {
+    background: transparent;
+    transform: none;
+  }
+  
+  tbody tr:active {
+    background: var(--card-hover);
+  }
 }
-.table-container::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary-color);
+
+/* Efek glow untuk ranking teratas */
+.rank-glow {
+  position: relative;
+}
+
+.rank-glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 20px rgba(255, 231, 76, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.rank-1.rank-glow::after {
+  opacity: 1;
+}
+
+/* Transisi halus untuk semua elemen */
+* {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 </style>
 </head>
