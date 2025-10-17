@@ -4,238 +4,532 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Motion Ime Fest Live Ranking</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
-/* CSS Variables dengan nama acak */
-<style>
-/* --- 1. CSS Variables (Root) --- */
+/* Modern CSS Variables */
 :root {
-  /* Colors */
-  --color-primary: #6c5ce7;
-  --color-secondary: #a29bfe;
-  --color-accent: #fd79a8;
-  --color-success: #00e47a;
-  --color-danger: #ff5c5c;
-  --color-warning: #ffe74c;  /* Gold */
-  --color-silver: #c0c0c0;   /* Silver */
-  --color-bronze: #cd7f32;   /* Bronze */
-
-  /* Backgrounds */
-  --bg-dark: #0a0f1c;
-  --bg-card: rgba(255, 255, 255, 0.05);
-  --bg-card-hover: rgba(255, 255, 255, 0.08);
-  --bg-table-header: rgba(15, 27, 51, 0.8);
-  --bg-gradient: radial-gradient(circle at top left, var(--bg-dark), #000);
-
-  /* Text */
-  --text-light: #f0f4fa;
+  --primary-purple: #6c5ce7;
+  --primary-dark: #5d4fcf;
+  --secondary-light: #a29bfe;
+  --accent-pink: #fd79a8;
+  --gradient-primary: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  --gradient-accent: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+  --dark-bg: #0f1424;
+  --darker-bg: #0a0f1c;
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-hover: rgba(255, 255, 255, 0.12);
+  --text-primary: #ffffff;
+  --text-secondary: #b0b8d0;
   --text-muted: #8da5c9;
-  --font-family-base: 'Inter', sans-serif;
-  --font-monospace: 'Courier New', monospace;
-
-  /* Sizing & Effects */
-  --border-radius-m: 12px;
-  --border-radius-s: 8px;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.3);
-  --transition-smooth: all 0.3s ease;
+  --success: #00e47a;
+  --success-light: #00ff88;
+  --danger: #ff5c5c;
+  --danger-light: #ff7676;
+  --warning: #ffe74c;
+  --warning-light: #fff176;
+  --border-radius: 16px;
+  --border-radius-sm: 12px;
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.4);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* --- 2. Global Styles --- */
-*,
-*::before,
-*::after {
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-html {
-  font-family: var(--font-family-base);
-  background: var(--bg-gradient);
-  color: var(--text-light);
-  margin: 0;
-  padding: 0;
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(ellipse at top left, var(--dark-bg) 0%, var(--darker-bg) 100%);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  margin: 0;
-  padding: 1.5rem; /* 24px */
+/* Glassmorphism Container */
+.main-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
   min-height: 100vh;
 }
 
-/* --- 3. Layout --- */
-.container-main {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.footer-info {
+/* Header Styles */
+.header-main {
   text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  margin-bottom: 40px;
+  padding: 40px 20px;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
 }
 
-/* --- 4. Components --- */
-
-/* Header */
-.header-section {
-  text-align: center;
-  margin-bottom: 2rem; /* 32px */
+.header-main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-primary);
 }
 
-.judul-utama {
-  /* Fluid typography: min, preferred, max */
-  font-size: clamp(1.5rem, 4vw, 2.2rem); 
+.page-title {
+  font-size: 3rem;
   font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  color: var(--color-primary);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
 }
 
-.sub-judul {
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  color: var(--text-muted);
-  margin: 0 0 1.5rem 0;
+.page-subtitle {
+  font-size: 1.3rem;
+  color: var(--text-secondary);
   font-weight: 400;
+  margin-bottom: 8px;
 }
 
-/* Status Info */
-#status-info {
+.title-decoration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.decoration-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  animation: pulse-dot 2s infinite;
+}
+
+.decoration-dot:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.decoration-dot:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+/* Status Indicator */
+.status-container {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border-radius: var(--border-radius-sm);
+  padding: 20px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-lg);
   text-align: center;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 1.5rem;
-  padding: 0.75rem;
-  border-radius: var(--border-radius-s);
-  background: var(--bg-card);
-  transition: background-color 0.3s ease;
+  transition: var(--transition);
 }
 
-.loading-state {
-  color: var(--color-secondary);
+.status-container:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+.status-loading {
+  color: var(--secondary-light);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
 .status-update {
-  color: var(--color-success);
+  color: var(--success);
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .status-error {
-  color: var(--color-danger);
+  color: var(--danger);
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
-/* Card & Table Wrapper */
-.kartu-container {
-  background: var(--bg-card);
-  border-radius: var(--border-radius-m);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-card);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--border-color);
-  overflow: hidden; /* Contain wrapper */
+/* Main Card */
+.main-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border-radius: var(--border-radius);
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-xl);
+  transition: var(--transition);
+  margin-bottom: 30px;
 }
 
-.wrapper-tabel {
+.main-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Table Styles */
+.table-wrapper {
   overflow-x: auto;
+  border-radius: var(--border-radius-sm);
   -webkit-overflow-scrolling: touch;
 }
 
-/* Table */
-.tabel-data {
+.data-table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem; /* ~14px */
-  min-width: 600px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 1rem;
+  min-width: 800px;
 }
 
-.header-tabel {
-  background: var(--bg-table-header);
+.table-header {
+  background: linear-gradient(135deg, rgba(108, 92, 231, 0.2) 0%, rgba(162, 155, 254, 0.1) 100%);
+  backdrop-filter: blur(10px);
 }
 
-.th-style, 
-.td-style {
-  padding: 0.8rem 1rem;
+.table-header th {
+  padding: 20px 16px;
   text-align: left;
-  white-space: nowrap;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.th-style {
   font-weight: 600;
-  color: var(--color-secondary);
-  font-size: 0.85em;
+  color: var(--secondary-light);
+  font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.baris-data {
-  transition: background-color 0.2s ease, transform 0.2s ease;
+.table-row {
+  transition: var(--transition);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
 }
 
-.baris-data:last-child .td-style {
+.table-row:last-child {
   border-bottom: none;
 }
 
-.baris-data:hover {
-  background: var(--bg-card-hover);
+.table-row:hover {
+  background: var(--card-hover);
+  transform: scale(1.01);
 }
 
-/* Rank Highlights */
-.peringkat-1 {
-  background: linear-gradient(90deg, rgba(255, 231, 76, 0.15), transparent);
-  border-left: 4px solid var(--color-warning);
-}
-.peringkat-2 {
-  background: linear-gradient(90deg, rgba(192, 192, 192, 0.15), transparent);
-  border-left: 4px solid var(--color-silver);
-}
-.peringkat-3 {
-  background: linear-gradient(90deg, rgba(205, 127, 50, 0.15), transparent);
-  border-left: 4px solid var(--color-bronze);
-}
-/* Style .peringkat-1::before dihapus karena redundan dengan style di atas */
-
-
-/* --- 5. Utility Classes --- */
-.naik {
-  color: var(--color-success);
-  font-weight: 600;
+.table-cell {
+  padding: 18px 16px;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
-.turun {
-  color: var(--color-danger);
-  font-weight: 600;
+/* Rank Badges */
+.rank-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
 }
 
 .rank-badge {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  text-align: center;
-  line-height: 24px;
-  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
   background: rgba(255, 255, 255, 0.1);
-  margin-right: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Special Rank Styles */
+.rank-1 {
+  background: linear-gradient(135deg, rgba(255, 231, 76, 0.15) 0%, rgba(255, 231, 76, 0.05) 100%);
+  border-left: 4px solid var(--warning);
+}
+
+.rank-1 .rank-badge {
+  background: var(--warning);
+  color: #000;
+  box-shadow: 0 4px 15px rgba(255, 231, 76, 0.3);
+}
+
+.rank-2 {
+  background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(192, 192, 192, 0.05) 100%);
+  border-left: 4px solid #c0c0c0;
+}
+
+.rank-2 .rank-badge {
+  background: #c0c0c0;
+  color: #000;
+  box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3);
+}
+
+.rank-3 {
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(205, 127, 50, 0.05) 100%);
+  border-left: 4px solid #cd7f32;
+}
+
+.rank-3 .rank-badge {
+  background: #cd7f32;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+}
+
+/* Vote Change Indicators */
+.vote-change.up {
+  color: var(--success-light);
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.vote-count {
-  font-family: var(--font-monospace);
-  font-weight: bold;
+.vote-change.down {
+  color: var(--danger-light);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.last-update {
-  font-size: 0.9em;
-  opacity: 0.8;
+.vote-change.neutral {
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
-.pulse-effect {
-  animation: pulseAnimation 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+/* Number Formatting */
+.number-cell {
+  font-family: 'Inter', monospace;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
-/* --- 6. Animations --- */
-@keyframes pulseAnimation {
+.time-cell {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Footer */
+.footer-main {
+  text-align: center;
+  padding: 25px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-lg);
+}
+
+.footer-icon {
+  color: var(--accent-pink);
+  margin: 0 8px;
+  animation: bounce 2s infinite;
+}
+
+/* Animations */
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.table-row {
+  animation: slideIn 0.5s ease-out;
+}
+
+/* Scrollbar Styling */
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--gradient-primary);
+  border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Mobile Responsive */
+@media (max-width: 1200px) {
+  .main-wrapper {
+    padding: 15px;
+  }
+  
+  .page-title {
+    font-size: 2.5rem;
+  }
+  
+  .main-card {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-wrapper {
+    padding: 10px;
+  }
+  
+  .header-main {
+    padding: 30px 15px;
+    margin-bottom: 25px;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .main-card {
+    padding: 20px;
+    margin: 0 -5px 25px;
+    border-radius: 12px;
+  }
+  
+  .status-container {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .data-table {
+    min-width: 700px;
+    font-size: 0.9rem;
+  }
+  
+  .table-header th {
+    padding: 15px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .table-cell {
+    padding: 15px 12px;
+  }
+  
+  .rank-badge {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  
+  .footer-main {
+    padding: 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-main {
+    padding: 25px 12px;
+  }
+  
+  .page-title {
+    font-size: 1.8rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+  }
+  
+  .main-card {
+    padding: 15px;
+  }
+  
+  .data-table {
+    min-width: 650px;
+    font-size: 0.85rem;
+  }
+  
+  .table-header th {
+    padding: 12px 10px;
+  }
+  
+  .table-cell {
+    padding: 12px 10px;
+  }
+  
+  .status-loading,
+  .status-update,
+  .status-error {
+    font-size: 1rem;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+  .table-row:hover {
+    transform: none;
+    background: inherit;
+  }
+  
+  .main-card:hover {
+    transform: none;
+  }
+  
+  .status-container:hover {
+    transform: none;
+  }
+}
+
+/* Loading Animation */
+.pulse-loading {
+  animation: pulse-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-loading {
   0%, 100% {
     opacity: 1;
   }
@@ -244,142 +538,103 @@ body {
   }
 }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Gradient Text Effects */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
 }
 
-/* --- 7. Scrollbar --- */
-.wrapper-tabel::-webkit-scrollbar {
-  height: 8px; /* Sedikit lebih tebal agar mudah di-drag */
+/* Custom Selection */
+::selection {
+  background: rgba(108, 92, 231, 0.3);
+  color: white;
 }
 
-.wrapper-tabel::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+/* Focus States for Accessibility */
+button:focus,
+a:focus {
+  outline: 2px solid var(--primary-purple);
+  outline-offset: 2px;
 }
-
-.wrapper-tabel::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
-  border-radius: 4px;
-}
-
-.wrapper-tabel::-webkit-scrollbar-thumb:hover {
-  background: var(--color-secondary);
-}
-
-/* --- 8. Media Queries (Responsive) --- */
-@media (max-width: 768px) {
-  body {
-    padding: 0.75rem; /* 12px */
-  }
-  
-  .kartu-container {
-    padding: 0.75rem;
-  }
-  
-  .tabel-data {
-    font-size: 0.85rem; /* ~13.5px */
-    min-width: 550px;
-  }
-  
-  .th-style, .td-style {
-    padding: 0.7rem 0.6rem;
-  }
-
-  /* Ini menggantikan fungsionalitas kelas .mobile-compact.
-    Tidak perlu lagi JS untuk menambah/menghapus kelas itu.
-  */
-  .td-style:nth-child(1), /* Rank */
-  .td-style:nth-child(4), /* Delta Votes */
-  .td-style:nth-child(5) { /* Views */
-    font-size: 0.9em; /* Relatif thd font-size tabel (0.85rem) */
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    padding: 0.5rem; /* 8px */
-  }
-
-  .kartu-container {
-    padding: 0.5rem;
-  }
-
-  .tabel-data {
-    font-size: 0.8rem; /* 12.8px */
-    min-width: 500px;
-  }
-
-  .th-style, .td-style {
-    padding: 0.6rem 0.5rem;
-  }
-}
-
-/* Touch improvements */
-@media (hover: none) {
-  .baris-data:hover {
-    background: transparent;
-    transform: none;
-  }
-  
-  .baris-data:active {
-    background: var(--bg-card-hover);
-  }
-}
-</style>
 </style>
 </head>
 <body>
-<div class="container-main">
-  <div class="header-section">
-    <h1 class="judul-utama">📊 Motion Ime Fest — Live Vote Rankings</h1>
-    <h2 class="sub-judul">Newcomer Streamer of the Year</h2>
+<div class="main-wrapper">
+  <!-- Header Section -->
+  <header class="header-main">
+    <h1 class="page-title">
+      <i class="fas fa-trophy"></i> Motion Ime Fest Live Rankings
+    </h1>
+    <p class="page-subtitle">Newcomer Streamer of the Year Competition</p>
+    <div class="title-decoration">
+      <div class="decoration-dot"></div>
+      <div class="decoration-dot"></div>
+      <div class="decoration-dot"></div>
+    </div>
+  </header>
+
+  <!-- Status Indicator -->
+  <div id="status-info" class="status-container">
+    <div class="status-loading pulse-loading">
+      <i class="fas fa-sync-alt fa-spin"></i>
+      Loading live ranking data...
+    </div>
   </div>
 
-  <div id="status-info" class="loading-state pulse-effect">Loading data...</div>
-
-  <div class="kartu-container">
-    <div class="wrapper-tabel">
-      <table class="tabel-data">
-        <thead class="header-tabel">
+  <!-- Main Content Card -->
+  <div class="main-card">
+    <div class="table-wrapper">
+      <table class="data-table" id="rankingTable">
+        <thead class="table-header">
           <tr>
-            <th class="th-style table-header-cell">Rank</th>
-            <th class="th-style table-header-cell">Name</th>
-            <th class="th-style table-header-cell">Votes</th>
-            <th class="th-style table-header-cell">Δ Votes</th>
-            <th class="th-style table-header-cell">Views</th>
-            <th class="th-style table-header-cell">Last Updated</th>
+            <th>Rank</th>
+            <th>Streamer</th>
+            <th>Votes</th>
+            <th>Trend</th>
+            <th>Views</th>
+            <th>Last Update</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <!-- Data will be populated by JavaScript -->
+        </tbody>
       </table>
     </div>
   </div>
 
-  <div class="footer-info">⚡ Data auto-refresh setiap 5 detik</div>
+  <!-- Footer -->
+  <footer class="footer-main">
+    <p>
+      <span class="footer-icon">⚡</span>
+      Live data updates every 5 seconds
+      <span class="footer-icon">⚡</span>
+    </p>
+    <p style="margin-top: 8px; font-size: 0.85rem; opacity: 0.8;">
+      Powered by Motion Ime Fest 2024
+    </p>
+  </footer>
 </div>
 
 <script>
-// JavaScript code tetap sama seperti sebelumnya
 const REFRESH_MS = 5000;
 let lastData = {};
 let firstLoad = true;
 
-function fmt(num) {
-  return num.toLocaleString("en-US");
+function formatNumber(num) {
+  return new Intl.NumberFormat('en-US').format(num);
 }
 
-function diffSymbol(n) {
-  return n > 0 ? `<span class="naik">+${n}</span>` :
-         n < 0 ? `<span class="turun">${n}</span>` :
-         `<span style="color:var(--teks-redup);">0</span>`;
+function getTrendSymbol(change) {
+  if (change > 0) {
+    return `<span class="vote-change up"><i class="fas fa-arrow-up"></i>+${change}</span>`;
+  } else if (change < 0) {
+    return `<span class="vote-change down"><i class="fas fa-arrow-down"></i>${change}</span>`;
+  } else {
+    return `<span class="vote-change neutral"><i class="fas fa-minus"></i>0</span>`;
+  }
 }
 
 function getApiUrl() {
@@ -389,70 +644,102 @@ function getApiUrl() {
   return `https://${base}.${domain}/${path}`;
 }
 
-async function fetchData() {
-  const status = document.getElementById("status-info");
+async function fetchRankingData() {
+  const statusElement = document.getElementById("status-info");
   try {
     const apiUrl = getApiUrl();
-    const res = await fetch(apiUrl + "?_=" + Date.now(), { 
+    const response = await fetch(apiUrl + "?_=" + Date.now(), { 
       cache: "no-store",
       headers: {
         'Accept': 'application/json'
       }
     });
     
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const json = await res.json();
-    if (!json.success || !json.data) throw new Error("Invalid response");
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    
+    const jsonData = await response.json();
+    if (!jsonData.success || !jsonData.data) throw new Error("Invalid response data");
 
-    const data = json.data.sort((a,b) => b.votes - a.votes);
-    const tbody = document.querySelector(".tabel-data tbody");
-    tbody.innerHTML = "";
+    // Sort data by votes
+    const sortedData = jsonData.data.sort((a, b) => b.votes - a.votes);
+    const tableBody = document.querySelector("#rankingTable tbody");
+    
+    // Clear existing rows
+    tableBody.innerHTML = "";
 
-    data.forEach((d, i) => {
-      const prev = lastData[d.id]?.votes ?? d.votes;
-      const delta = d.votes - prev;
+    // Populate table with new data
+    sortedData.forEach((streamer, index) => {
+      const previousVotes = lastData[streamer.id]?.votes ?? streamer.votes;
+      const voteChange = streamer.votes - previousVotes;
 
-      const tr = document.createElement("tr");
-      tr.className = "baris-data " + (i === 0 ? "peringkat-1" : i === 1 ? "peringkat-2" : i === 2 ? "peringkat-3" : "");
+      const tableRow = document.createElement("tr");
+      tableRow.className = `table-row ${index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : ''}`;
       
+      // Add mobile compact class for responsive design
       if (window.innerWidth <= 768) {
-        tr.classList.add('mobile-compact');
+        tableRow.classList.add('mobile-compact');
       }
 
-      tr.innerHTML = `
-        <td class="td-style"><span class="rank-badge">${i + 1}</span></td>
-        <td class="td-style">${d.name}</td>
-        <td class="td-style vote-count">${fmt(d.votes)}</td>
-        <td class="td-style">${diffSymbol(delta)}</td>
-        <td class="td-style">${fmt(d.views)}</td>
-        <td class="td-style last-update">${new Date(d.lastUpdated).toLocaleTimeString()}</td>
+      tableRow.innerHTML = `
+        <td class="table-cell rank-cell">
+          <div class="rank-badge">${index + 1}</div>
+        </td>
+        <td class="table-cell">
+          <strong>${streamer.name}</strong>
+        </td>
+        <td class="table-cell number-cell">
+          ${formatNumber(streamer.votes)}
+        </td>
+        <td class="table-cell">
+          ${getTrendSymbol(voteChange)}
+        </td>
+        <td class="table-cell number-cell">
+          ${formatNumber(streamer.views)}
+        </td>
+        <td class="table-cell time-cell">
+          ${new Date(streamer.lastUpdated).toLocaleTimeString()}
+        </td>
       `;
-      tbody.appendChild(tr);
-
-      lastData[d.id] = { votes: d.votes, views: d.views };
+      
+      tableBody.appendChild(tableRow);
+      lastData[streamer.id] = { votes: streamer.votes, views: streamer.views };
     });
 
-    const totalVotes = json.totals?.votes?.toLocaleString() || "-";
-    const totalViews = json.totals?.views?.toLocaleString() || "-";
+    // Update status with totals
+    const totalVotes = jsonData.totals?.votes ? formatNumber(jsonData.totals.votes) : "-";
+    const totalViews = jsonData.totals?.views ? formatNumber(jsonData.totals.views) : "-";
     
-    status.innerHTML = `<span class="status-update">✅ Updated ${new Date(json.timestamp).toLocaleTimeString()} — Total Votes: ${totalVotes}, Views: ${totalViews}</span>`;
-    status.classList.remove("loading-state", "pulse-effect");
+    statusElement.innerHTML = `
+      <div class="status-update">
+        <i class="fas fa-check-circle"></i>
+        Updated ${new Date(jsonData.timestamp).toLocaleTimeString()} 
+        • Total Votes: <strong>${totalVotes}</strong> 
+        • Views: <strong>${totalViews}</strong>
+      </div>
+    `;
     
+    statusElement.classList.remove("status-loading", "pulse-loading");
     firstLoad = false;
 
-  } catch (err) {
-    console.error(err);
-    status.innerHTML = `<span class="status-error">❌ Gagal memuat data: ${err.message}</span>`;
-    status.classList.remove("loading-state", "pulse-effect");
+  } catch (error) {
+    console.error('Data fetch error:', error);
+    statusElement.innerHTML = `
+      <div class="status-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        Failed to load data: ${error.message}
+      </div>
+    `;
+    statusElement.classList.remove("status-loading", "pulse-loading");
   }
 }
 
-// Event listeners untuk protection
+// Event listeners for protection
 document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
 });
 
 document.addEventListener('keydown', function(e) {
+  // Block developer tools shortcuts
   if (e.key === 'F12' || 
       (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
       (e.ctrlKey && e.key === 'u')) {
@@ -460,9 +747,9 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Handle resize
+// Handle window resize for responsive adjustments
 window.addEventListener('resize', function() {
-  const rows = document.querySelectorAll('.tabel-data tbody .baris-data');
+  const rows = document.querySelectorAll('#rankingTable tbody .table-row');
   rows.forEach(row => {
     if (window.innerWidth <= 768) {
       row.classList.add('mobile-compact');
@@ -472,8 +759,20 @@ window.addEventListener('resize', function() {
   });
 });
 
-fetchData();
-setInterval(fetchData, REFRESH_MS);
+// Initialize and start auto-refresh
+fetchRankingData();
+setInterval(fetchRankingData, REFRESH_MS);
+
+// Add loading animation to status on initial load
+document.addEventListener('DOMContentLoaded', function() {
+  const statusElement = document.getElementById("status-info");
+  statusElement.innerHTML = `
+    <div class="status-loading pulse-loading">
+      <i class="fas fa-sync-alt fa-spin"></i>
+      Initializing live ranking system...
+    </div>
+  `;
+});
 </script>
 </body>
 </html>
