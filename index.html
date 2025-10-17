@@ -15,6 +15,9 @@
   --accent-pink: #fd79a8;
   --gradient-primary: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
   --gradient-accent: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+  --gradient-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  --gradient-silver: linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 100%);
+  --gradient-bronze: linear-gradient(135deg, #CD7F32 0%, #A65C00 100%);
   --dark-bg: #0f1424;
   --darker-bg: #0a0f1c;
   --card-bg: rgba(255, 255, 255, 0.08);
@@ -193,7 +196,7 @@ body {
   border-collapse: separate;
   border-spacing: 0;
   font-size: 1rem;
-  min-width: 800px;
+  min-width: 900px;
 }
 
 .table-header {
@@ -235,6 +238,61 @@ body {
   color: var(--text-primary);
 }
 
+/* Streamer Profile Styles */
+.streamer-profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: var(--transition);
+}
+
+.rank-1 .profile-image {
+  width: 60px;
+  height: 60px;
+  border: 3px solid var(--warning);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.rank-2 .profile-image {
+  width: 55px;
+  height: 55px;
+  border: 3px solid #c0c0c0;
+  box-shadow: 0 0 15px rgba(192, 192, 192, 0.4);
+}
+
+.rank-3 .profile-image {
+  width: 55px;
+  height: 55px;
+  border: 3px solid #cd7f32;
+  box-shadow: 0 0 15px rgba(205, 127, 50, 0.4);
+}
+
+.streamer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.streamer-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.streamer-handle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
 /* Rank Badges */
 .rank-cell {
   display: flex;
@@ -244,72 +302,139 @@ body {
 }
 
 .rank-badge {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 1rem;
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: var(--transition);
 }
 
 /* Special Rank Styles */
 .rank-1 {
-  background: linear-gradient(135deg, rgba(255, 231, 76, 0.15) 0%, rgba(255, 231, 76, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.05) 100%);
   border-left: 4px solid var(--warning);
+  position: relative;
+}
+
+.rank-1::before {
+  content: '👑';
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  opacity: 0.8;
 }
 
 .rank-1 .rank-badge {
-  background: var(--warning);
+  background: var(--gradient-gold);
   color: #000;
-  box-shadow: 0 4px 15px rgba(255, 231, 76, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+  border: 2px solid #FFD700;
 }
 
 .rank-2 {
   background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(192, 192, 192, 0.05) 100%);
   border-left: 4px solid #c0c0c0;
+  position: relative;
+}
+
+.rank-2::before {
+  content: '🥈';
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.3rem;
+  opacity: 0.8;
 }
 
 .rank-2 .rank-badge {
-  background: #c0c0c0;
+  background: var(--gradient-silver);
   color: #000;
-  box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3);
+  box-shadow: 0 4px 20px rgba(192, 192, 192, 0.4);
+  border: 2px solid #c0c0c0;
 }
 
 .rank-3 {
   background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(205, 127, 50, 0.05) 100%);
   border-left: 4px solid #cd7f32;
+  position: relative;
+}
+
+.rank-3::before {
+  content: '🥉';
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.3rem;
+  opacity: 0.8;
 }
 
 .rank-3 .rank-badge {
-  background: #cd7f32;
+  background: var(--gradient-bronze);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+  box-shadow: 0 4px 20px rgba(205, 127, 50, 0.4);
+  border: 2px solid #cd7f32;
+}
+
+/* Special styling for top 3 streamer names */
+.rank-1 .streamer-name {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+.rank-2 .streamer-name {
+  background: var(--gradient-silver);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+.rank-3 .streamer-name {
+  background: var(--gradient-bronze);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
 }
 
 /* Vote Change Indicators */
-.vote-change.up {
-  color: var(--success-light);
-  font-weight: 600;
+.vote-change {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: var(--transition);
+}
+
+.vote-change.up {
+  color: var(--success-light);
+  background: rgba(0, 228, 122, 0.1);
+  border: 1px solid rgba(0, 228, 122, 0.3);
 }
 
 .vote-change.down {
   color: var(--danger-light);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  background: rgba(255, 92, 92, 0.1);
+  border: 1px solid rgba(255, 92, 92, 0.3);
 }
 
 .vote-change.neutral {
   color: var(--text-muted);
-  font-weight: 500;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Number Formatting */
@@ -317,6 +442,7 @@ body {
   font-family: 'Inter', monospace;
   font-weight: 600;
   color: var(--text-primary);
+  font-size: 1.1rem;
 }
 
 .time-cell {
@@ -378,8 +504,21 @@ body {
   }
 }
 
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+  }
+}
+
 .table-row {
   animation: slideIn 0.5s ease-out;
+}
+
+.rank-1 .profile-image {
+  animation: glow 2s ease-in-out infinite;
 }
 
 /* Scrollbar Styling */
@@ -446,7 +585,7 @@ body {
   }
   
   .data-table {
-    min-width: 700px;
+    min-width: 800px;
     font-size: 0.9rem;
   }
   
@@ -459,10 +598,26 @@ body {
     padding: 15px 12px;
   }
   
+  .profile-image {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .rank-1 .profile-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .rank-2 .profile-image,
+  .rank-3 .profile-image {
+    width: 48px;
+    height: 48px;
+  }
+  
   .rank-badge {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
   }
   
   .footer-main {
@@ -489,7 +644,7 @@ body {
   }
   
   .data-table {
-    min-width: 650px;
+    min-width: 750px;
     font-size: 0.85rem;
   }
   
@@ -499,6 +654,30 @@ body {
   
   .table-cell {
     padding: 12px 10px;
+  }
+  
+  .streamer-profile {
+    gap: 10px;
+  }
+  
+  .profile-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .rank-1 .profile-image {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .rank-2 .profile-image,
+  .rank-3 .profile-image {
+    width: 42px;
+    height: 42px;
+  }
+  
+  .streamer-name {
+    font-size: 1rem;
   }
   
   .status-loading,
@@ -522,6 +701,10 @@ body {
   .status-container:hover {
     transform: none;
   }
+  
+  .vote-change:hover {
+    transform: none;
+  }
 }
 
 /* Loading Animation */
@@ -536,15 +719,6 @@ body {
   50% {
     opacity: 0.7;
   }
-}
-
-/* Gradient Text Effects */
-.gradient-text {
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
 }
 
 /* Custom Selection */
@@ -623,6 +797,18 @@ const REFRESH_MS = 5000;
 let lastData = {};
 let firstLoad = true;
 
+// Profile image mapping
+const profileImages = {
+  'XXKNJT': 'https://motionimefest.id/wp-content/uploads/2025/10/XXKNJT.jpg',
+  'Boo': 'https://motionimefest.id/wp-content/uploads/2025/10/Boo.jpg',
+  'JustDani': 'https://motionimefest.id/wp-content/uploads/2025/10/JustDani.jpg',
+  'SonMV': 'https://motionimefest.id/wp-content/uploads/2025/10/Sonmv.jpg',
+  'KekeLawar': 'https://motionimefest.id/wp-content/uploads/2025/10/Kekelawar.jpg',
+  'YaraaYay': 'https://motionimefest.id/wp-content/uploads/2025/10/Yaraayay.jpg',
+  'Wasawho': 'https://motionimefest.id/wp-content/uploads/2025/10/Wasawho.jpg',
+  'Searchforemma': 'https://motionimefest.id/wp-content/uploads/2025/10/searchforemma.jpg'
+};
+
 function formatNumber(num) {
   return new Intl.NumberFormat('en-US').format(num);
 }
@@ -635,6 +821,10 @@ function getTrendSymbol(change) {
   } else {
     return `<span class="vote-change neutral"><i class="fas fa-minus"></i>0</span>`;
   }
+}
+
+function getProfileImage(name) {
+  return profileImages[name] || 'https://via.placeholder.com/50/6c5ce7/ffffff?text=' + name.charAt(0);
 }
 
 function getApiUrl() {
@@ -685,7 +875,13 @@ async function fetchRankingData() {
           <div class="rank-badge">${index + 1}</div>
         </td>
         <td class="table-cell">
-          <strong>${streamer.name}</strong>
+          <div class="streamer-profile">
+            <img src="${getProfileImage(streamer.name)}" alt="${streamer.name}" class="profile-image" onerror="this.src='https://via.placeholder.com/50/6c5ce7/ffffff?text=${streamer.name.charAt(0)}'">
+            <div class="streamer-info">
+              <div class="streamer-name">${streamer.name}</div>
+              <div class="streamer-handle">@${streamer.name.toLowerCase()}</div>
+            </div>
+          </div>
         </td>
         <td class="table-cell number-cell">
           ${formatNumber(streamer.votes)}
